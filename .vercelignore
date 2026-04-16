@@ -1,0 +1,8 @@
+backend/**
+node_modules/**
+.docker/**
+.vscode/**
+*.log
+.env
+.env.local
+!.env.example
