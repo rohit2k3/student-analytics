@@ -19,6 +19,10 @@ import {
   Trash2,
   ChevronDown,
   ChevronUp,
+  Pencil,
+  Save,
+  X,
+  Loader2,
 } from "lucide-react";
 import {
   Bar,
@@ -39,11 +43,24 @@ export default function StudentDetailPage() {
   const [data, setData] = useState(null);
   const [expandedSem, setExpandedSem] = useState(null);
   const [deleting, setDeleting] = useState(null);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editForm, setEditForm] = useState(null);
+  const [editSaving, setEditSaving] = useState(false);
+  const [editMsg, setEditMsg] = useState("");
 
   async function load() {
     try {
       const res = await apiRequest(`/teacher/students/${id}`, { token });
       setData(res);
+      // Pre-fill edit form with current student data
+      setEditForm({
+        name: res.student.name || "",
+        department: res.student.profile?.department || "",
+        year: res.student.profile?.year || "",
+        targetGpa: res.student.profile?.targetGpa ?? "",
+        weeklyStudyHours: res.student.profile?.weeklyStudyHours ?? "",
+        learningGoal: res.student.profile?.learningGoal || "",
+      });
     } catch (e) {
       setError(e.message);
     } finally {
@@ -65,6 +82,35 @@ export default function StudentDetailPage() {
       alert(e.message);
     } finally {
       setDeleting(null);
+    }
+  }
+
+  async function saveStudentProfile(e) {
+    e.preventDefault();
+    setEditSaving(true);
+    setEditMsg("");
+    try {
+      await apiRequest(`/teacher/students/${id}`, {
+        method: "PUT",
+        token,
+        body: {
+          name: editForm.name,
+          profile: {
+            department: editForm.department,
+            year: editForm.year,
+            targetGpa: editForm.targetGpa === "" ? "" : Number(editForm.targetGpa),
+            weeklyStudyHours: editForm.weeklyStudyHours === "" ? "" : Number(editForm.weeklyStudyHours),
+            learningGoal: editForm.learningGoal,
+          },
+        },
+      });
+      setEditMsg("Saved!");
+      await load();
+      setTimeout(() => { setEditOpen(false); setEditMsg(""); }, 1200);
+    } catch (err) {
+      setEditMsg(err.message);
+    } finally {
+      setEditSaving(false);
     }
   }
 
@@ -122,6 +168,13 @@ export default function StudentDetailPage() {
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setEditOpen((o) => !o)}
+            className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 text-sm font-semibold px-4 py-2.5 rounded-lg hover:bg-gray-200 transition-colors"
+          >
+            {editOpen ? <X className="h-4 w-4" /> : <Pencil className="h-4 w-4" />}
+            {editOpen ? "Cancel" : "Edit Profile"}
+          </button>
           <Link
             href={`/teacher/students/${id}/semester/new`}
             className="inline-flex items-center gap-2 bg-indigo-600 text-white text-sm font-semibold px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm"
@@ -138,6 +191,52 @@ export default function StudentDetailPage() {
           </Link>
         </div>
       </div>
+
+      {/* Edit Profile Form (collapsible) */}
+      {editOpen && editForm && (
+        <form onSubmit={saveStudentProfile} className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+          <div className="border-b border-gray-100 bg-gray-50/50 px-6 py-4 flex items-center justify-between">
+            <h3 className="font-semibold text-gray-900">Edit Student Profile</h3>
+            {editMsg && (
+              <span className={`text-sm font-medium ${editMsg === "Saved!" ? "text-green-600" : "text-red-600"}`}>{editMsg}</span>
+            )}
+          </div>
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+            {[{label:"Full Name",key:"name",type:"text",placeholder:"John Doe"},{label:"Department / Major",key:"department",type:"text",placeholder:"e.g. Computer Science"},{label:"Year / Semester",key:"year",type:"text",placeholder:"e.g. 3rd Year"},{label:"Target GPA",key:"targetGpa",type:"number",placeholder:"e.g. 8.5"},{label:"Weekly Study Hours",key:"weeklyStudyHours",type:"number",placeholder:"e.g. 15"}].map(({label,key,type,placeholder}) => (
+              <label key={key}>
+                <span className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1.5">{label}</span>
+                <input
+                  type={type}
+                  value={editForm[key]}
+                  onChange={(e) => setEditForm((f) => ({ ...f, [key]: e.target.value }))}
+                  placeholder={placeholder}
+                  className="block w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                />
+              </label>
+            ))}
+            <label className="md:col-span-2">
+              <span className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Learning Goal</span>
+              <textarea
+                value={editForm.learningGoal}
+                onChange={(e) => setEditForm((f) => ({ ...f, learningGoal: e.target.value }))}
+                placeholder="What is this student aiming for?"
+                rows={3}
+                className="block w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white resize-none"
+              />
+            </label>
+          </div>
+          <div className="px-6 py-4 border-t border-gray-100 flex justify-end">
+            <button
+              type="submit"
+              disabled={editSaving}
+              className="inline-flex items-center gap-2 bg-black text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-900 disabled:opacity-50 transition-colors"
+            >
+              {editSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              {editSaving ? "Saving..." : "Save Changes"}
+            </button>
+          </div>
+        </form>
+      )}
 
       {/* KPI cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

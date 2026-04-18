@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "../../../components/auth-context";
-import { BarChart3, AlertCircle, ArrowRight, Loader2 } from "lucide-react";
+import { apiRequest } from "../../../lib/api";
+import { BarChart3, AlertCircle, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,14 +20,19 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const user = await login(formData.email, formData.password);
-      if (user.role === "teacher") {
+      const data = await apiRequest("/auth/login", {
+        method: "POST",
+        body: { email: formData.email, password: formData.password },
+      });
+      // data = { token, user: { id, name, email, role, ... } }
+      login(data.token, data.user);
+      if (data.user?.role === "teacher") {
         router.push("/teacher/dashboard");
       } else {
         router.push("/dashboard");
       }
     } catch (err) {
-      setError(err.message || "Failed to login. Please try again.");
+      setError(err.message || "Invalid email or password.");
     } finally {
       setLoading(false);
     }

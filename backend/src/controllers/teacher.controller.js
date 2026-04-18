@@ -154,6 +154,11 @@ function normalizeSubjects(subjects) {
     }));
 }
 
+const VALID_SEMESTER_LABELS = [
+  "Semester 1", "Semester 2", "Semester 3", "Semester 4",
+  "Semester 5", "Semester 6", "Semester 7", "Semester 8",
+];
+
 async function addSemesterForStudent(req, res) {
   const { semesterLabel, subjects, gpa, percentage } = req.body;
 
@@ -161,9 +166,25 @@ async function addSemesterForStudent(req, res) {
     return res.status(400).json({ message: "Semester label and subjects are required" });
   }
 
+  if (!VALID_SEMESTER_LABELS.includes(semesterLabel)) {
+    return res.status(400).json({ message: "Semester label must be one of: Semester 1 through Semester 8" });
+  }
+
   // Verify teacher owns this student
   const student = await User.findOne({ _id: req.params.id, role: "student", createdBy: req.user.id });
   if (!student) return res.status(404).json({ message: "Student not found" });
+
+  // Enforce max 8 semesters
+  const existingCount = await SemesterResult.countDocuments({ userId: req.params.id });
+  if (existingCount >= 8) {
+    return res.status(400).json({ message: "Maximum of 8 semesters allowed per student" });
+  }
+
+  // Prevent duplicate semester label
+  const duplicate = await SemesterResult.findOne({ userId: req.params.id, semesterLabel });
+  if (duplicate) {
+    return res.status(409).json({ message: `${semesterLabel} already exists for this student` });
+  }
 
   const normalizedSubjects = normalizeSubjects(subjects);
   if (normalizedSubjects.some((s) => Number.isNaN(s.score) || s.score < 0 || s.score > 100)) {
@@ -180,6 +201,7 @@ async function addSemesterForStudent(req, res) {
 
   return res.status(201).json(created);
 }
+
 
 async function updateSemesterForStudent(req, res) {
   const { semesterLabel, subjects, gpa, percentage } = req.body;
