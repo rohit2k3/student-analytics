@@ -1,118 +1,232 @@
 import Link from "next/link";
-import { BarChart3, BrainCircuit, Target, ArrowRight } from "lucide-react";
+import { ArrowRight, BarChart2, BookOpen, BrainCircuit, Target, CheckCircle2 } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="bg-white min-h-screen font-sans text-gray-900 selection:bg-indigo-100">
-      {/* Navbar */}
-      <nav className="border-b border-gray-100">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 justify-between items-center">
-            <div className="flex flex-shrink-0 items-center gap-2">
-              <div className="p-2 bg-indigo-600 rounded-lg">
-                <BarChart3 className="h-6 w-6 text-white" />
-              </div>
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
-                AuraAnalytics
-              </span>
-            </div>
-            <div className="flex gap-4">
-              <Link
-                href="/login"
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:text-indigo-600 px-4 py-2"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/register"
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 shadow-sm"
-              >
-                Get Started
-              </Link>
-            </div>
+    <div className="bg-black min-h-screen text-white selection:bg-white selection:text-black font-sans">
+      
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full bg-black/80 backdrop-blur-md z-50 border-b border-white/10">
+        <div className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-lg tracking-tight text-white">AuraAnalytics</span>
           </div>
+          <Link
+            href="/login"
+            className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
+          >
+            Sign In
+          </Link>
         </div>
       </nav>
 
-      <main>
-        {/* Hero Section */}
-        <section className="relative px-6 py-24 sm:py-32 lg:px-8 overflow-hidden">
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-50 via-white to-white"></div>
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-6xl mb-6">
-              Master Your Semesters with{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
-                Intelligent Analytics
+      <main className="pt-24 lg:pt-32 relative overflow-hidden">
+        
+        {/* Background Effects */}
+        <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/[0.02] rounded-full blur-[100px]"></div>
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/[0.02] rounded-full blur-[100px]"></div>
+        </div>
+
+        {/* Two-Column Hero */}
+        <section className="relative z-10 px-6 py-16 md:py-24 max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+          
+          {/* Left Column: Text Content */}
+          <div className="flex flex-col items-start text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-bold uppercase tracking-widest text-gray-400 mb-6 group cursor-default">
+              <span className="flex h-2 w-2 mr-1">
+                <span className="animate-pulse absolute inline-flex h-2 w-2 rounded-full bg-white opacity-70"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
               </span>
+              Academic OS v2.0
+            </div>
+            
+            <h1 className="text-5xl sm:text-6xl lg:text-[4.5rem] font-extrabold tracking-tighter leading-[1.05] mb-6 text-white">
+              Data driven <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500">learning.</span>
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600 mb-10">
-              Track your academic performance, uncover weak subjects, study smarter with AI-generated quizzes, and reach your target GPA effortlessly.
+            
+            <p className="text-lg text-gray-400 font-medium max-w-md mb-8 leading-relaxed">
+              Don't guess your performance. AuraAnalytics gives you precise clarity on where you stand and exactly what to study next.
             </p>
-            <div className="flex items-center justify-center gap-x-6">
+
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
               <Link
-                href="/register"
-                className="rounded-full bg-indigo-600 px-8 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 flex items-center gap-2 transition-transform hover:scale-105"
+                href="/login"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-black px-7 py-3 rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors"
               >
-                Start Analyzing Free <ArrowRight className="h-4 w-4" />
+                Start Free <ArrowRight className="h-4 w-4" />
               </Link>
+              <a
+                href="#platform"
+                className="w-full sm:w-auto flex items-center justify-center text-white border border-white/20 px-7 py-3 rounded-lg text-sm font-semibold hover:bg-white/5 transition-colors"
+              >
+                View Features
+              </a>
+            </div>
+          </div>
+
+          {/* Right Column: Abstract Minimalist UI Element */}
+          <div className="relative w-full max-w-md mx-auto lg:mx-0 lg:ml-auto">
+            {/* Outer Glow */}
+            <div className="absolute -inset-1 bg-gradient-to-b from-white/20 to-transparent rounded-2xl blur-xl opacity-30"></div>
+            
+            {/* Floating Glass Card */}
+            <div className="relative rounded-2xl border border-white/10 bg-[#0a0a0a]/80 backdrop-blur-xl shadow-2xl p-6 overflow-hidden">
+              {/* Card Header */}
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                    <BarChart2 className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-white">Overall Trajectory</div>
+                    <div className="text-xs text-gray-500">Semester 1-4</div>
+                  </div>
+                </div>
+                <div className="px-2.5 py-1 rounded-md bg-white/10 text-white text-xs font-bold font-mono">
+                  +12.4%
+                </div>
+              </div>
+
+              {/* Abstract Chart */}
+              <div className="flex items-end gap-3 h-32 mb-4">
+                {[40, 55, 48, 70, 65, 85, 95].map((height, i) => (
+                  <div key={i} className="flex-1 bg-white/5 rounded-t object-bottom relative group">
+                    <div 
+                      className="absolute bottom-0 w-full bg-white/20 rounded-t transition-all duration-1000 group-hover:bg-white"
+                      style={{ height: `${height}%` }}
+                    ></div>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Card Footer */}
+              <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                <div className="flex -space-x-2">
+                  <div className="w-6 h-6 rounded-full bg-gray-600 border-2 border-[#0a0a0a]"></div>
+                  <div className="w-6 h-6 rounded-full bg-gray-400 border-2 border-[#0a0a0a]"></div>
+                  <div className="w-6 h-6 rounded-full bg-white border-2 border-[#0a0a0a]"></div>
+                </div>
+                <div className="text-xs text-gray-500 font-medium">Synced just now</div>
+              </div>
+            </div>
+            
+            {/* Floating decorative elements */}
+            {/* <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-white/5 border border-white/10 rounded-xl backdrop-blur-md flex items-center justify-center animate-bounce duration-[3000ms]">
+              <Target className="w-8 h-8 text-white/50" />
+            </div> */}
+          </div>
+
+        </section>
+
+        {/* Minimal Stats Strip */}
+        <section className="border-y border-white/10 bg-white/5">
+          <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 text-center divide-y md:divide-y-0 md:divide-x divide-white/10">
+            <div className="pt-4 md:pt-0">
+              <p className="text-4xl font-light tracking-tight mb-1 text-white">100%</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Clarity</p>
+            </div>
+            <div className="pt-4 md:pt-0">
+              <p className="text-4xl font-light tracking-tight mb-1 text-white">0</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Distractions</p>
+            </div>
+            <div className="pt-4 md:pt-0">
+              <p className="text-4xl font-light tracking-tight mb-1 text-white">AI</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Powered Quizzes</p>
+            </div>
+            <div className="pt-4 md:pt-0 flex items-center justify-center flex-col">
+              <div className="flex -space-x-2 overflow-hidden mb-2">
+                <div className="inline-block h-8 w-8 rounded-full ring-2 ring-black bg-gray-600" />
+                <div className="inline-block h-8 w-8 rounded-full ring-2 ring-black bg-gray-400" />
+                <div className="inline-block h-8 w-8 rounded-full ring-2 ring-black bg-white" />
+              </div>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">For Students & Teachers</p>
             </div>
           </div>
         </section>
 
-        {/* Feature Grid Section */}
-        <section className="bg-gray-50 py-24 sm:py-32">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-base font-semibold leading-7 text-indigo-600">Accelerate Learning</h2>
-              <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Everything you need to excel</p>
-            </div>
-            <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-              <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
-                <div className="flex flex-col bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                  <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900 mb-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50">
-                      <BarChart3 className="h-6 w-6 text-indigo-600" aria-hidden="true" />
-                    </div>
-                    Visual Dashboard
-                  </dt>
-                  <dd className="mt-1 flex flex-auto flex-col text-base leading-7 text-gray-600">
-                    <p className="flex-auto">Watch your grades grow. Comprehensive charts breakdown your absolute best, worst, and average trends across terms.</p>
-                  </dd>
-                </div>
-                
-                <div className="flex flex-col bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                  <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900 mb-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-50">
-                      <BrainCircuit className="h-6 w-6 text-purple-600" aria-hidden="true" />
-                    </div>
-                    Targeted Quizzes
-                  </dt>
-                  <dd className="mt-1 flex flex-auto flex-col text-base leading-7 text-gray-600">
-                    <p className="flex-auto">Our AI automatically detects your weakest areas and generates adaptive practice questions so you hit the books effectively.</p>
-                  </dd>
-                </div>
+        {/* Asymmetric Feature Layout - Platform Section */}
+        <section id="platform" className="py-24 md:py-32 max-w-6xl mx-auto px-6">
+          <div className="mb-20">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-white">The core loops.</h2>
+            <p className="text-lg text-gray-400 max-w-xl">
+              Everything you need to stay on top of your studies without the bloated interface. Simple inputs, powerful outputs.
+            </p>
+          </div>
 
-                <div className="flex flex-col bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                  <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900 mb-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-pink-50">
-                      <Target className="h-6 w-6 text-pink-600" aria-hidden="true" />
-                    </div>
-                    Goal Tracking
-                  </dt>
-                  <dd className="mt-1 flex flex-auto flex-col text-base leading-7 text-gray-600">
-                    <p className="flex-auto">Establish your ideal target GPA and weekly study schedules. Map out your path and see how far you are from success.</p>
-                  </dd>
-                </div>
-              </dl>
+          <div className="grid md:grid-cols-2 gap-16 md:gap-24">
+            
+            {/* Feature Block 1 */}
+            <div className="flex flex-col gap-6">
+              <div className="w-12 h-12 bg-white/10 border border-white/5 rounded-lg flex items-center justify-center mb-2">
+                <BarChart2 className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold tracking-tight text-white">Data that speaks.</h3>
+              <p className="text-gray-400 leading-relaxed">
+                Log your semester results and let AuraAnalytics do the rest. View straightforward graphs detailing your overall GPA, your strongest subjects, and the specific areas pulling your average down. No complex setup—just immediate insights.
+              </p>
+              <ul className="space-y-3 mt-4">
+                <li className="flex items-center gap-3 text-sm font-medium text-gray-300">
+                  <CheckCircle2 className="h-4 w-4 text-gray-500" /> Historical grade tracking
+                </li>
+                <li className="flex items-center gap-3 text-sm font-medium text-gray-300">
+                  <CheckCircle2 className="h-4 w-4 text-gray-500" /> Weakness identification
+                </li>
+              </ul>
             </div>
+
+            {/* Feature Block 2 */}
+            <div className="flex flex-col gap-6">
+              <div className="w-12 h-12 bg-white/10 border border-white/5 rounded-lg flex items-center justify-center mb-2">
+                <BrainCircuit className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold tracking-tight text-white">Adaptive testing.</h3>
+              <p className="text-gray-400 leading-relaxed">
+                Once the system identifies your weak subjects, you can generate AI practice quizzes instantly. The platform tailors questions to the exact topics you struggle with, allowing you to focus your study time efficiently.
+              </p>
+              <ul className="space-y-3 mt-4">
+                <li className="flex items-center gap-3 text-sm font-medium text-gray-300">
+                  <CheckCircle2 className="h-4 w-4 text-gray-500" /> On-demand quiz generation
+                </li>
+                <li className="flex items-center gap-3 text-sm font-medium text-gray-300">
+                  <CheckCircle2 className="h-4 w-4 text-gray-500" /> Real-time feedback
+                </li>
+              </ul>
+            </div>
+
+            {/* Feature Block 3 */}
+            <div className="flex flex-col gap-6">
+              <div className="w-12 h-12 bg-white/10 border border-white/5 rounded-lg flex items-center justify-center mb-2">
+                <Target className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold tracking-tight text-white">Target alignment.</h3>
+              <p className="text-gray-400 leading-relaxed">
+                Set an overarching GPA goal and define your weekly study hours. AuraAnalytics calculates exactly how far you are from reaching your objective so you can adjust your habits accordingly.
+              </p>
+            </div>
+
+            {/* Feature Block 4 */}
+            <div className="flex flex-col gap-6 border-t md:border-t-0 md:border-l border-white/10 pt-8 md:pt-0 md:pl-16">
+              <div className="w-12 h-12 bg-white/10 border border-white/5 rounded-lg flex items-center justify-center mb-2">
+                <BookOpen className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold tracking-tight text-white">Role segregation.</h3>
+              <p className="text-gray-400 leading-relaxed">
+                Clean boundaries. Teachers manage student profiles and assign curated quizzes. Students get a read-only view of their metrics designed entirely to help them understand their performance.
+              </p>
+            </div>
+
           </div>
         </section>
 
       </main>
 
-      <footer className="bg-white border-t border-gray-100 py-12">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
-          <p className="text-sm text-gray-500">© 2026 AuraAnalytics. All rights reserved.</p>
+      {/* Footer */}
+      <footer className="border-t border-white/10 bg-black">
+        <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-4">
+          <span className="font-bold tracking-tight text-sm text-white">AuraAnalytics.</span>
+          <p className="text-xs text-gray-500">© 2026. Designed for focus.</p>
         </div>
       </footer>
     </div>

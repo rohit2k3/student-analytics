@@ -27,6 +27,8 @@ export function AuthProvider({ children }) {
       token,
       user,
       isAuthenticated: Boolean(token),
+      isTeacher: user?.role === "teacher",
+      isStudent: !user?.role || user?.role === "student",
       login: (newToken, newUser) => {
         localStorage.setItem("spa_token", newToken);
         localStorage.setItem("spa_user", JSON.stringify(newUser));
@@ -57,3 +59,4 @@ export function useAuth() {
   }
   return context;
 }
+

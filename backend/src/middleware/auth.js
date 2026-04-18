@@ -24,6 +24,7 @@ async function authMiddleware(req, res, next) {
       id: user._id.toString(),
       email: user.email,
       name: user.name,
+      role: user.role || "student",
       profile: user.profile || {},
     };
 
@@ -34,3 +35,4 @@ async function authMiddleware(req, res, next) {
 }
 
 module.exports = authMiddleware;
+

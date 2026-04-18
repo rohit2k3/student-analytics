@@ -8,6 +8,7 @@ const analyticsRoutes = require("./routes/analytics.routes");
 const recommendationRoutes = require("./routes/recommendation.routes");
 const quizRoutes = require("./routes/quiz.routes");
 const improvementRoutes = require("./routes/improvement.routes");
+const teacherRoutes = require("./routes/teacher.routes");
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/recommendations", recommendationRoutes);
 app.use("/api/quiz", quizRoutes);
 app.use("/api/improvement", improvementRoutes);
+app.use("/api/teacher", teacherRoutes);
 
 app.use((err, _req, res, _next) => {
   // eslint-disable-next-line no-console
@@ -40,3 +42,4 @@ app.use((err, _req, res, _next) => {
 });
 
 module.exports = app;
+

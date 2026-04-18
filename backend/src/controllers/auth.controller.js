@@ -13,40 +13,14 @@ function signToken(userId) {
   });
 }
 
-async function register(req, res) {
-  const { name, email, password } = req.body;
-
-  if (!name || !email || !password) {
-    return res.status(400).json({ message: "Name, email, and password are required" });
-  }
-
-  if (password.length < 6) {
-    return res.status(400).json({ message: "Password must have at least 6 characters" });
-  }
-
-  const existing = await User.findOne({ email: email.toLowerCase() });
-  if (existing) {
-    return res.status(409).json({ message: "Email already registered" });
-  }
-
-  const passwordHash = await bcrypt.hash(password, 10);
-  const user = await User.create({
-    name,
-    email,
-    passwordHash,
-  });
-
-  const token = signToken(user._id.toString());
-
-  return res.status(201).json({
-    token,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      profile: user.profile || {},
-    },
-  });
+function formatUser(user) {
+  return {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role || "student",
+    profile: user.profile || {},
+  };
 }
 
 async function login(req, res) {
@@ -68,15 +42,7 @@ async function login(req, res) {
 
   const token = signToken(user._id.toString());
 
-  return res.json({
-    token,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      profile: user.profile || {},
-    },
-  });
+  return res.json({ token, user: formatUser(user) });
 }
 
 function me(req, res) {
@@ -112,19 +78,43 @@ async function updateProfile(req, res) {
     runValidators: true,
   }).lean();
 
-  return res.json({
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      profile: user.profile || {},
-    },
-  });
+  return res.json({ user: formatUser(user) });
+}
+
+// One-time endpoint to create the first teacher account.
+// Only works when no teacher exists yet (first-run safety).
+async function seedTeacher(req, res) {
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: "Name, email, and password are required" });
+  }
+
+  if (password.length < 6) {
+    return res.status(400).json({ message: "Password must have at least 6 characters" });
+  }
+
+  const existingTeacher = await User.findOne({ role: "teacher" });
+  if (existingTeacher) {
+    return res.status(403).json({ message: "A teacher account already exists. Use the teacher panel to manage accounts." });
+  }
+
+  const existing = await User.findOne({ email: email.toLowerCase() });
+  if (existing) {
+    return res.status(409).json({ message: "Email already registered" });
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10);
+  const user = await User.create({ name, email, passwordHash, role: "teacher" });
+
+  const token = signToken(user._id.toString());
+  return res.status(201).json({ token, user: formatUser(user) });
 }
 
 module.exports = {
-  register,
   login,
   me,
   updateProfile,
+  seedTeacher,
 };
+

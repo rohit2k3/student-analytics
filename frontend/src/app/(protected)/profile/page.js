@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../../components/auth-context";
 import { apiRequest } from "../../../lib/api";
+import { Loader2, User, Save, CheckCircle2, AlertCircle } from "lucide-react";
 
 function toFormData(user) {
   return {
@@ -72,103 +73,147 @@ export default function ProfilePage() {
     }
   }
 
-  return (
-    <section className="spa-panel p-6">
-      <h3 className="spa-title text-lg font-bold text-amber-900">Profile</h3>
-      <p className="mt-1 text-sm text-stone-600">Maintain your academic profile and goals.</p>
+  const inputClass = "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm placeholder-gray-400 focus-ring bg-white transition-colors disabled:bg-gray-50 disabled:text-gray-500";
+  const labelClass = "block text-sm font-semibold text-gray-900 mb-1.5";
 
-      <form className="mt-4 space-y-4" onSubmit={onSubmit}>
-        <div className="grid gap-3 md:grid-cols-2">
-          <label>
-            <span className="mb-1 block text-sm font-semibold">Name</span>
-            <input
-              className="spa-input"
-              value={form.name}
-              onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
-            />
-          </label>
-          <label>
-            <span className="mb-1 block text-sm font-semibold">Email</span>
-            <input className="spa-input" disabled value={form.email} />
-          </label>
-          <label>
-            <span className="mb-1 block text-sm font-semibold">Department</span>
-            <input
-              className="spa-input"
-              value={form.profile.department}
-              onChange={(event) =>
-                setForm((prev) => ({
-                  ...prev,
-                  profile: { ...prev.profile, department: event.target.value },
-                }))
-              }
-            />
-          </label>
-          <label>
-            <span className="mb-1 block text-sm font-semibold">Year / Semester</span>
-            <input
-              className="spa-input"
-              value={form.profile.year}
-              onChange={(event) =>
-                setForm((prev) => ({ ...prev, profile: { ...prev.profile, year: event.target.value } }))
-              }
-            />
-          </label>
-          <label>
-            <span className="mb-1 block text-sm font-semibold">Target GPA</span>
-            <input
-              className="spa-input"
-              type="number"
-              min={0}
-              max={10}
-              step="0.01"
-              value={form.profile.targetGpa}
-              onChange={(event) =>
-                setForm((prev) => ({
-                  ...prev,
-                  profile: { ...prev.profile, targetGpa: event.target.value },
-                }))
-              }
-            />
-          </label>
-          <label>
-            <span className="mb-1 block text-sm font-semibold">Weekly Study Hours</span>
-            <input
-              className="spa-input"
-              type="number"
-              min={0}
-              value={form.profile.weeklyStudyHours}
-              onChange={(event) =>
-                setForm((prev) => ({
-                  ...prev,
-                  profile: { ...prev.profile, weeklyStudyHours: event.target.value },
-                }))
-              }
-            />
-          </label>
+  return (
+    <div className="max-w-3xl mx-auto space-y-6">
+      
+      <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+        <div className="border-b border-gray-100 bg-gray-50/50 px-6 py-5 flex items-center gap-3">
+          <div className="p-2 bg-white rounded-md border border-gray-200 shadow-sm">
+            <User className="h-5 w-5 text-black" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold text-black tracking-tight">Account Profile</h3>
+            <p className="text-sm text-gray-500">Manage your personal information and academic goals.</p>
+          </div>
         </div>
 
-        <label className="block">
-          <span className="mb-1 block text-sm font-semibold">Learning Goal</span>
-          <textarea
-            className="spa-input min-h-24"
-            value={form.profile.learningGoal}
-            onChange={(event) =>
-              setForm((prev) => ({
-                ...prev,
-                profile: { ...prev.profile, learningGoal: event.target.value },
-              }))
-            }
-          />
-        </label>
+        <form className="p-6 space-y-6" onSubmit={onSubmit}>
+          
+          {message && (
+             <div className="rounded-md bg-emerald-50 p-4 border border-emerald-100 flex items-start gap-3">
+               <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-0.5" />
+               <div className="text-sm text-emerald-800 font-medium">{message}</div>
+             </div>
+          )}
+          
+          {error && (
+            <div className="rounded-md bg-red-50 p-4 border border-red-100 flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
+              <div className="text-sm text-red-800 font-medium">{error}</div>
+            </div>
+          )}
 
-        <button className="spa-button" type="submit" disabled={loading}>
-          {loading ? "Saving..." : "Save Profile"}
-        </button>
+          <div className="grid gap-6 md:grid-cols-2">
+            <label>
+              <span className={labelClass}>Full Name</span>
+              <input
+                className={inputClass}
+                value={form.name}
+                onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
+                placeholder="John Doe"
+              />
+            </label>
+            <label>
+              <span className={labelClass}>Email Address</span>
+              <input className={inputClass} disabled value={form.email} />
+            </label>
+            
+            <div className="col-span-2 pt-4 pb-2">
+              <h4 className="text-sm font-bold uppercase tracking-wider text-gray-400">Academic Details</h4>
+              <hr className="mt-2 border-gray-100" />
+            </div>
 
-        {message ? <p className="text-sm text-emerald-700">{message}</p> : null}
-        {error ? <p className="text-sm text-red-700">{error}</p> : null}
-      </form>
-    </section>
+            <label>
+              <span className={labelClass}>Department / Major</span>
+              <input
+                className={inputClass}
+                value={form.profile.department}
+                onChange={(event) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    profile: { ...prev.profile, department: event.target.value },
+                  }))
+                }
+                placeholder="e.g. Computer Science"
+              />
+            </label>
+            <label>
+              <span className={labelClass}>Year / Semester</span>
+              <input
+                className={inputClass}
+                value={form.profile.year}
+                onChange={(event) =>
+                  setForm((prev) => ({ ...prev, profile: { ...prev.profile, year: event.target.value } }))
+                }
+                placeholder="e.g. Senior"
+              />
+            </label>
+            <label>
+              <span className={labelClass}>Target GPA Goal</span>
+              <input
+                className={inputClass}
+                type="number"
+                min={0}
+                max={10}
+                step="0.01"
+                value={form.profile.targetGpa}
+                onChange={(event) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    profile: { ...prev.profile, targetGpa: event.target.value },
+                  }))
+                }
+                placeholder="e.g. 3.8"
+              />
+            </label>
+            <label>
+              <span className={labelClass}>Target Weekly Study Hours</span>
+              <input
+                className={inputClass}
+                type="number"
+                min={0}
+                value={form.profile.weeklyStudyHours}
+                onChange={(event) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    profile: { ...prev.profile, weeklyStudyHours: event.target.value },
+                  }))
+                }
+                placeholder="e.g. 15"
+              />
+            </label>
+          </div>
+
+          <label className="block">
+            <span className={labelClass}>Primary Learning Goal</span>
+            <textarea
+              className={`${inputClass} min-h-[120px] resize-y`}
+              value={form.profile.learningGoal}
+              onChange={(event) =>
+                setForm((prev) => ({
+                  ...prev,
+                  profile: { ...prev.profile, learningGoal: event.target.value },
+                }))
+              }
+              placeholder="What are you trying to accomplish this year?"
+            />
+          </label>
+
+          <div className="pt-4 flex justify-end">
+            <button 
+              className="inline-flex items-center gap-2 bg-black text-white text-sm font-semibold px-6 py-2.5 rounded-md hover:bg-gray-900 disabled:opacity-50 transition-colors focus-ring" 
+              type="submit" 
+              disabled={loading}
+            >
+              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              {loading ? "Saving Profile..." : "Save Profile"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
