@@ -31,9 +31,11 @@ const assignedQuizSchema = new mongoose.Schema(
       default: "medium",
     },
     questions: { type: [questionSchema], default: [] },
+    dueAt: { type: Date, default: null },
+    mandatory: { type: Boolean, default: false },
     status: {
       type: String,
-      enum: ["pending", "submitted"],
+      enum: ["pending", "submitted", "missed"],
       default: "pending",
     },
     userAnswers: { type: [String], default: [] },

@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "../../../../../../../components/auth-context";
 import { apiRequest } from "../../../../../../../lib/api";
-import { ArrowLeft, BrainCircuit, Send, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowLeft, BrainCircuit, Send, AlertCircle, CheckCircle2, Loader2, Plus, Trash2, PencilLine } from "lucide-react";
 
 const DIFFICULTIES = ["easy", "medium", "hard"];
 const LEVELS = ["beginner", "intermediate", "advanced"];
@@ -15,7 +15,11 @@ export default function AssignQuizPage() {
   const { token } = useAuth();
   const router = useRouter();
 
-  const [form, setForm] = useState({ subject: "", topic: "", difficulty: "medium", level: "intermediate" });
+  const [form, setForm] = useState({ subject: "", topic: "", difficulty: "medium", level: "intermediate", dueAt: "", mandatory: false });
+  const [mode, setMode] = useState("ai");
+  const [manualQuestions, setManualQuestions] = useState([
+    { question: "", options: ["", "", "", ""], answer: "" },
+  ]);
   const [preview, setPreview] = useState(null);   // questions preview after assign
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -23,6 +27,36 @@ export default function AssignQuizPage() {
 
   function handleChange(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
+  }
+
+  function updateManualQuestion(index, patch) {
+    setManualQuestions((prev) =>
+      prev.map((q, i) => (i === index ? { ...q, ...patch } : q))
+    );
+  }
+
+  function updateManualOption(qIndex, optIndex, value) {
+    setManualQuestions((prev) =>
+      prev.map((q, i) =>
+        i === qIndex
+          ? {
+              ...q,
+              options: q.options.map((opt, oi) => (oi === optIndex ? value : opt)),
+            }
+          : q
+      )
+    );
+  }
+
+  function addManualQuestion() {
+    setManualQuestions((prev) => [
+      ...prev,
+      { question: "", options: ["", "", "", ""], answer: "" },
+    ]);
+  }
+
+  function removeManualQuestion(index) {
+    setManualQuestions((prev) => prev.filter((_, i) => i !== index));
   }
 
   async function onAssign(e) {
@@ -34,12 +68,26 @@ export default function AssignQuizPage() {
       setError("Subject and topic are required");
       return;
     }
+    if (mode === "manual") {
+      const invalid = manualQuestions.some((q) => {
+        const opts = q.options.map((o) => o.trim()).filter(Boolean);
+        return !q.question.trim() || opts.length < 2 || !q.answer.trim() || !opts.includes(q.answer.trim());
+      });
+      if (invalid) {
+        setError("Each question needs text, at least 2 options, and an answer that matches an option");
+        return;
+      }
+    }
     setLoading(true);
     try {
       const quiz = await apiRequest(`/teacher/students/${id}/quiz`, {
         method: "POST",
         token,
-        body: form,
+        body: {
+          ...form,
+          dueAt: form.dueAt ? new Date(form.dueAt).toISOString() : undefined,
+          questions: mode === "manual" ? manualQuestions : undefined,
+        },
       });
       setSuccess(`Quiz assigned! ${quiz.questions?.length || 0} questions generated.`);
       setPreview(quiz.questions || []);
@@ -59,7 +107,7 @@ export default function AssignQuizPage() {
         </Link>
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Assign Quiz</h1>
-          <p className="text-sm text-gray-500 mt-0.5">Generate an AI-powered quiz and assign it to this student</p>
+          <p className="text-sm text-gray-500 mt-0.5">Generate with AI or build a quiz manually</p>
         </div>
       </div>
 
@@ -77,6 +125,30 @@ export default function AssignQuizPage() {
         )}
 
         <form onSubmit={onAssign} className="space-y-5">
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => setMode("ai")}
+              className={`flex-1 rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
+                mode === "ai"
+                  ? "bg-purple-600 text-white border-purple-600"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-purple-300"
+              }`}
+            >
+              <BrainCircuit className="inline h-4 w-4 mr-1" /> AI Generated
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("manual")}
+              className={`flex-1 rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
+                mode === "manual"
+                  ? "bg-indigo-600 text-white border-indigo-600"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-indigo-300"
+              }`}
+            >
+              <PencilLine className="inline h-4 w-4 mr-1" /> Manual Builder
+            </button>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {/* Subject */}
             <div>
@@ -145,7 +217,90 @@ export default function AssignQuizPage() {
                 ))}
               </div>
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Deadline</label>
+              <input
+                type="datetime-local"
+                value={form.dueAt}
+                onChange={(e) => handleChange("dueAt", e.target.value)}
+                className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
+            <div className="flex items-center gap-3">
+              <input
+                id="mandatory"
+                type="checkbox"
+                checked={form.mandatory}
+                onChange={(e) => handleChange("mandatory", e.target.checked)}
+                className="h-4 w-4 accent-indigo-600"
+              />
+              <label htmlFor="mandatory" className="text-sm font-medium text-gray-700">
+                Mark as mandatory
+              </label>
+            </div>
           </div>
+
+          {mode === "manual" ? (
+            <div className="space-y-4">
+              {manualQuestions.map((q, index) => (
+                <div key={index} className="rounded-xl border border-gray-100 bg-gray-50/60 p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <label className="flex-1">
+                      <span className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1.5">
+                        Question {index + 1}
+                      </span>
+                      <input
+                        type="text"
+                        value={q.question}
+                        onChange={(e) => updateManualQuestion(index, { question: e.target.value })}
+                        placeholder="Type the question"
+                        className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    </label>
+                    {manualQuestions.length > 1 ? (
+                      <button
+                        type="button"
+                        onClick={() => removeManualQuestion(index)}
+                        className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-2.5 py-2 text-xs text-gray-500 hover:text-red-600"
+                      >
+                        <Trash2 className="h-4 w-4" /> Remove
+                      </button>
+                    ) : null}
+                  </div>
+                  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {q.options.map((opt, optIndex) => (
+                      <input
+                        key={optIndex}
+                        type="text"
+                        value={opt}
+                        onChange={(e) => updateManualOption(index, optIndex, e.target.value)}
+                        placeholder={`Option ${optIndex + 1}`}
+                        className="px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      />
+                    ))}
+                  </div>
+                  <div className="mt-3">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Correct Answer</label>
+                    <input
+                      type="text"
+                      value={q.answer}
+                      onChange={(e) => updateManualQuestion(index, { answer: e.target.value })}
+                      placeholder="Must match one of the options"
+                      className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                </div>
+              ))}
+
+              <button
+                type="button"
+                onClick={addManualQuestion}
+                className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:border-indigo-300"
+              >
+                <Plus className="h-4 w-4" /> Add Question
+              </button>
+            </div>
+          ) : null}
 
           <div className="pt-2 border-t border-gray-50">
             <button

@@ -33,6 +33,11 @@ export default function QuizPage() {
   const [practiceLoading, setPracticeLoading] = useState(false);
   const [error, setError] = useState("");
 
+  function isOverdue(quiz) {
+    if (!quiz?.dueAt) return false;
+    return new Date(quiz.dueAt).getTime() < Date.now();
+  }
+
   useEffect(() => {
     async function loadAll() {
       try {
@@ -109,6 +114,8 @@ export default function QuizPage() {
 
   // ── Active assigned quiz view ──────────────────────────────────────────────
   if (activeQuiz) {
+    const overdue = isOverdue(activeQuiz);
+    const missed = activeQuiz.status === "missed" || overdue;
     return (
       <div className="max-w-2xl mx-auto space-y-6">
         <div>
@@ -116,8 +123,31 @@ export default function QuizPage() {
             ← Back to quizzes
           </button>
           <h1 className="text-2xl font-bold text-gray-900 mt-3">{activeQuiz.subject} — {activeQuiz.topic}</h1>
-          <p className="text-sm text-gray-400 capitalize">{activeQuiz.difficulty} difficulty · {activeQuiz.questions.length} questions</p>
+          <p className="text-sm text-gray-400 capitalize">
+            {activeQuiz.difficulty} difficulty · {activeQuiz.questions.length} questions
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2 text-xs">
+            {activeQuiz.mandatory ? (
+              <span className="inline-flex items-center rounded-full bg-red-50 text-red-700 px-2.5 py-1 font-semibold">Mandatory</span>
+            ) : (
+              <span className="inline-flex items-center rounded-full bg-gray-100 text-gray-600 px-2.5 py-1 font-semibold">Optional</span>
+            )}
+            {activeQuiz.dueAt ? (
+              <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-semibold ${missed ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700"}`}>
+                <Clock className="h-3 w-3" /> Due {new Date(activeQuiz.dueAt).toLocaleString()}
+              </span>
+            ) : null}
+            {missed ? (
+              <span className="inline-flex items-center rounded-full bg-rose-50 text-rose-700 px-2.5 py-1 font-semibold">Missed</span>
+            ) : null}
+          </div>
         </div>
+
+        {missed ? (
+          <div className="rounded-xl border border-rose-100 bg-rose-50 p-6 text-sm text-rose-700">
+            The deadline has passed. This quiz is marked as missed.
+          </div>
+        ) : null}
 
         {assignedResult ? (
           <div className={`rounded-2xl p-8 text-center border ${assignedResult.percentage >= 60 ? "bg-green-50 border-green-100" : "bg-red-50 border-red-100"}`}>
@@ -132,7 +162,7 @@ export default function QuizPage() {
               Done
             </button>
           </div>
-        ) : (
+        ) : missed ? null : (
           <form onSubmit={submitAssigned} className="space-y-4">
             {activeQuiz.questions.map((q, i) => (
               <div key={i} className="rounded-xl border border-gray-100 bg-white shadow-sm p-6">
@@ -200,10 +230,14 @@ export default function QuizPage() {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {assignedQuizzes.map((q) => (
+              (() => {
+                const overdue = isOverdue(q);
+                const missed = q.status === "missed" || overdue;
+                return (
               <div
                 key={q._id}
                 className={`rounded-xl border bg-white shadow-sm p-5 flex flex-col gap-3 ${
-                  q.status === "submitted" ? "border-green-100" : "border-indigo-100"
+                  q.status === "submitted" ? "border-green-100" : missed ? "border-rose-100" : "border-indigo-100"
                 }`}
               >
                 <div className="flex items-start justify-between">
@@ -215,6 +249,10 @@ export default function QuizPage() {
                     <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 px-2 py-1 rounded-full">
                       <CheckCircle2 className="h-3 w-3" /> Done
                     </span>
+                  ) : missed ? (
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-rose-700 bg-rose-50 px-2 py-1 rounded-full">
+                      <Clock className="h-3 w-3" /> Missed
+                    </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-700 bg-amber-50 px-2 py-1 rounded-full">
                       <Clock className="h-3 w-3" /> Pending
@@ -225,10 +263,27 @@ export default function QuizPage() {
                   <span className="capitalize">{q.difficulty}</span>
                   <span>·</span>
                   <span>{q.questions?.length || 0} questions</span>
+                  {q.dueAt ? (
+                    <>
+                      <span>·</span>
+                      <span>Due {new Date(q.dueAt).toLocaleDateString()}</span>
+                    </>
+                  ) : null}
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  {q.mandatory ? (
+                    <span className="inline-flex items-center rounded-full bg-red-50 text-red-700 px-2 py-1 font-semibold">Mandatory</span>
+                  ) : (
+                    <span className="inline-flex items-center rounded-full bg-gray-100 text-gray-600 px-2 py-1 font-semibold">Optional</span>
+                  )}
                 </div>
                 {q.status === "submitted" ? (
                   <div className={`text-center rounded-lg py-2 text-sm font-bold ${q.percentage >= 60 ? "bg-green-50 text-green-700" : "bg-red-50 text-red-600"}`}>
                     {q.percentage}% &nbsp;({q.score}/{q.total})
+                  </div>
+                ) : missed ? (
+                  <div className="text-center rounded-lg py-2 text-sm font-semibold bg-rose-50 text-rose-700">
+                    Deadline passed
                   </div>
                 ) : (
                   <button
@@ -239,6 +294,8 @@ export default function QuizPage() {
                   </button>
                 )}
               </div>
+                );
+              })()
             ))}
           </div>
         )}

@@ -29,7 +29,15 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
     profile: {
+      course: {
+        type: String,
+        default: "",
+      },
       department: {
+        type: String,
+        default: "",
+      },
+      semester: {
         type: String,
         default: "",
       },

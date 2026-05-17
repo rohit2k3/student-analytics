@@ -6,16 +6,28 @@ import { useAuth } from "../../../../../components/auth-context";
 import { apiRequest } from "../../../../../lib/api";
 import { UserPlus, AlertCircle, CheckCircle2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import courseMap from "../../../../../data/course-map.json";
 
-const DEPARTMENTS = ["Computer Science", "Information Technology", "Electronics", "Mechanical", "Civil", "Electrical", "Mathematics", "Physics", "Chemistry", "Commerce", "Arts", "Other"];
 const YEARS = ["1st Year", "2nd Year", "3rd Year", "4th Year", "Postgraduate"];
+const SEMESTERS = [
+  "Semester 1", "Semester 2", "Semester 3", "Semester 4",
+  "Semester 5", "Semester 6", "Semester 7", "Semester 8",
+];
+
+function getYearForSemester(semester) {
+  if (semester === "Semester 1" || semester === "Semester 2") return "1st Year";
+  if (semester === "Semester 3" || semester === "Semester 4") return "2nd Year";
+  if (semester === "Semester 5" || semester === "Semester 6") return "3rd Year";
+  if (semester === "Semester 7" || semester === "Semester 8") return "4th Year";
+  return "";
+}
 
 export default function AddStudentPage() {
   const { token } = useAuth();
   const router = useRouter();
   const [form, setForm] = useState({
     name: "", email: "", password: "",
-    department: "", year: "",
+    course: "", department: "", semester: "", year: "",
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -24,6 +36,13 @@ export default function AddStudentPage() {
   function handleChange(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
   }
+
+  const courseOptions = Object.keys(courseMap || {});
+  const departmentOptions = form.course ? Object.keys(courseMap[form.course] || {}) : [];
+  const subjectPreview =
+    form.course && form.department && form.semester
+      ? courseMap[form.course]?.[form.department]?.[form.semester] || []
+      : [];
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -42,7 +61,12 @@ export default function AddStudentPage() {
           name: form.name,
           email: form.email,
           password: form.password,
-          profile: { department: form.department, year: form.year },
+          profile: {
+            course: form.course,
+            department: form.department,
+            semester: form.semester,
+            year: form.year,
+          },
         },
       });
       setSuccess("Student account created successfully!");
@@ -126,14 +150,54 @@ export default function AddStudentPage() {
 
             {/* Department */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Department</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Course <span className="text-red-500">*</span></label>
               <select
-                value={form.department}
-                onChange={(e) => handleChange("department", e.target.value)}
+                required
+                value={form.course}
+                onChange={(e) => {
+                  handleChange("course", e.target.value);
+                  handleChange("department", "");
+                  handleChange("semester", "");
+                }}
                 className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
               >
+                <option value="">Select course</option>
+                {courseOptions.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Department <span className="text-red-500">*</span></label>
+              <select
+                required
+                value={form.department}
+                onChange={(e) => {
+                  handleChange("department", e.target.value);
+                  handleChange("semester", "");
+                }}
+                disabled={!form.course}
+                className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white disabled:bg-gray-50 disabled:text-gray-400"
+              >
                 <option value="">Select department</option>
-                {DEPARTMENTS.map((d) => <option key={d} value={d}>{d}</option>)}
+                {departmentOptions.map((d) => <option key={d} value={d}>{d}</option>)}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Semester <span className="text-red-500">*</span></label>
+              <select
+                required
+                value={form.semester}
+                onChange={(e) => {
+                  const nextSemester = e.target.value;
+                  handleChange("semester", nextSemester);
+                  handleChange("year", getYearForSemester(nextSemester));
+                }}
+                disabled={!form.department}
+                className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white disabled:bg-gray-50 disabled:text-gray-400"
+              >
+                <option value="">Select semester</option>
+                {SEMESTERS.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
 
@@ -143,13 +207,37 @@ export default function AddStudentPage() {
               <select
                 value={form.year}
                 onChange={(e) => handleChange("year", e.target.value)}
-                className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
+                disabled
+                className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm bg-gray-50 text-gray-400"
               >
                 <option value="">Select year</option>
                 {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
               </select>
+              <p className="mt-1 text-xs text-gray-400">Auto-selected from semester.</p>
             </div>
           </div>
+
+          {form.course && form.department && form.semester && subjectPreview.length === 0 && (
+            <div className="rounded-xl border border-amber-100 bg-amber-50 p-4 text-sm text-amber-700">
+              No subjects found for this selection. Please update the course map JSON.
+            </div>
+          )}
+
+          {subjectPreview.length > 0 && (
+            <div className="rounded-xl border border-indigo-100 bg-indigo-50/40 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600 mb-2">
+                Subjects to be added automatically
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
+                {subjectPreview.map((s) => (
+                  <div key={s.name} className="rounded-lg bg-white border border-indigo-100 px-3 py-2">
+                    <p className="font-medium">{s.name}</p>
+                    <p className="text-xs text-gray-400">Credits: {s.credits || 0} · {s.category || "theory"}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Submit */}
           <div className="flex items-center gap-4 pt-2 border-t border-gray-50">

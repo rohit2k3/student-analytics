@@ -30,6 +30,7 @@ const TEACHER_NAV = [
   { href: "/teacher/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/teacher/students", label: "My Students", icon: Users },
   { href: "/teacher/students/new", label: "Add Student", icon: UserPlus },
+  { href: "/teacher/quizzes", label: "Quizzes", icon: BrainCircuit },
   { href: "/profile", label: "Profile", icon: User },
 ];
 

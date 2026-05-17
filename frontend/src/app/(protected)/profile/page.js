@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../../components/auth-context";
 import { apiRequest } from "../../../lib/api";
 import { User, Lock } from "lucide-react";
+import { getPerformanceTag, getPerformanceTagClasses } from "../../../lib/performance-tag";
 
 function Field({ label, value }) {
   return (
@@ -16,6 +17,7 @@ function Field({ label, value }) {
 
 export default function ProfilePage() {
   const { token, user, isStudent, updateUser } = useAuth();
+  const [avgPercentage, setAvgPercentage] = useState(null);
 
   // Always refresh latest profile from server
   const refreshProfile = useCallback(async () => {
@@ -29,7 +31,24 @@ export default function ProfilePage() {
     if (token) refreshProfile();
   }, [token, refreshProfile]);
 
+  useEffect(() => {
+    async function loadAnalytics() {
+      try {
+        const data = await apiRequest("/analytics", { token });
+        setAvgPercentage(data.overallPercentage ?? null);
+      } catch (_) {
+        setAvgPercentage(null);
+      }
+    }
+
+    if (token && isStudent) {
+      loadAnalytics();
+    }
+  }, [token, isStudent]);
+
   const p = user?.profile || {};
+  const performanceTag = getPerformanceTag(avgPercentage);
+  const performanceClasses = getPerformanceTagClasses(performanceTag.tone);
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -45,12 +64,17 @@ export default function ProfilePage() {
               <p className="text-sm text-gray-500">Your personal information and academic details.</p>
             </div>
           </div>
-          {isStudent && (
-            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-100 px-3 py-1.5 rounded-full">
-              <Lock className="h-3.5 w-3.5" />
-              Managed by teacher
+          {isStudent ? (
+            <div className="inline-flex items-center gap-2">
+              <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${performanceClasses}`}>
+                {performanceTag.label}
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-100 px-3 py-1.5 rounded-full">
+                <Lock className="h-3.5 w-3.5" />
+                Managed by teacher
+              </span>
             </div>
-          )}
+          ) : null}
         </div>
 
         {/* Read-only display */}

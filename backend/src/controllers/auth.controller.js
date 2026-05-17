@@ -45,6 +45,37 @@ async function login(req, res) {
   return res.json({ token, user: formatUser(user) });
 }
 
+async function register(req, res) {
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: "Name, email, and password are required" });
+  }
+
+  if (password.length < 6) {
+    return res.status(400).json({ message: "Password must have at least 6 characters" });
+  }
+
+  const normalizedRole = "teacher";
+
+  const normalizedEmail = email.toLowerCase();
+  const existing = await User.findOne({ email: normalizedEmail });
+  if (existing) {
+    return res.status(409).json({ message: "Email already registered" });
+  }
+
+  const passwordHash = await bcrypt.hash(password, 10);
+  const user = await User.create({
+    name: name.trim(),
+    email: normalizedEmail,
+    passwordHash,
+    role: normalizedRole,
+  });
+
+  const token = signToken(user._id.toString());
+  return res.status(201).json({ token, user: formatUser(user) });
+}
+
 function me(req, res) {
   return res.json({ user: req.user });
 }
@@ -113,6 +144,7 @@ async function seedTeacher(req, res) {
 
 module.exports = {
   login,
+  register,
   me,
   updateProfile,
   seedTeacher,

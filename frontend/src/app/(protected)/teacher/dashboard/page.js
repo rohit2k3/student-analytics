@@ -15,6 +15,7 @@ import {
   BookOpen,
   ClipboardList,
 } from "lucide-react";
+import { getPerformanceTag, getPerformanceTagClasses } from "../../../../lib/performance-tag";
 
 export default function TeacherDashboard() {
   const { token, user } = useAuth();
@@ -167,11 +168,15 @@ export default function TeacherDashboard() {
                   <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Semesters</th>
                   <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Avg GPA</th>
                   <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Avg Score</th>
+                  <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Performance</th>
                   <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {students.slice(0, 8).map((student) => (
+                {students.slice(0, 8).map((student) => {
+                  const tag = getPerformanceTag(student.avgPercentage);
+                  const tagClasses = getPerformanceTagClasses(tag.tone);
+                  return (
                   <tr key={student.id} className="hover:bg-gray-50/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -194,6 +199,11 @@ export default function TeacherDashboard() {
                     <td className="px-6 py-4 text-gray-600">
                       {student.avgPercentage != null ? `${student.avgPercentage}%` : "—"}
                     </td>
+                    <td className="px-6 py-4">
+                      <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${tagClasses}`}>
+                        {tag.label}
+                      </span>
+                    </td>
                     <td className="px-6 py-4 text-right">
                       <Link
                         href={`/teacher/students/${student.id}`}
@@ -203,7 +213,8 @@ export default function TeacherDashboard() {
                       </Link>
                     </td>
                   </tr>
-                ))}
+                );
+                })}
               </tbody>
             </table>
           </div>

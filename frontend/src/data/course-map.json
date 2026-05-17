@@ -1,0 +1,666 @@
+{
+  "BTech": {
+    "Computer Science": {
+      "Semester 1": [
+        { "name": "Engineering Mathematics I", "credits": 4, "category": "theory" },
+        { "name": "Engineering Physics", "credits": 3, "category": "theory" },
+        { "name": "Programming in C", "credits": 4, "category": "problem-solving" },
+        { "name": "Basic Electrical Engineering", "credits": 3, "category": "theory" },
+        { "name": "Engineering Graphics", "credits": 3, "category": "practical" },
+        { "name": "Communication Skills", "credits": 2, "category": "other" }
+      ],
+      "Semester 2": [
+        { "name": "Engineering Mathematics II", "credits": 4, "category": "theory" },
+        { "name": "Engineering Chemistry", "credits": 3, "category": "theory" },
+        { "name": "Data Structures", "credits": 4, "category": "problem-solving" },
+        { "name": "Digital Logic Design", "credits": 3, "category": "theory" },
+        { "name": "Environmental Studies", "credits": 2, "category": "other" },
+        { "name": "Engineering Mechanics", "credits": 3, "category": "theory" }
+      ],
+      "Semester 3": [
+        { "name": "Discrete Mathematics", "credits": 4, "category": "theory" },
+        { "name": "Computer Organization", "credits": 4, "category": "theory" },
+        { "name": "Object Oriented Programming", "credits": 4, "category": "problem-solving" },
+        { "name": "Operating Systems", "credits": 4, "category": "theory" },
+        { "name": "Probability and Statistics", "credits": 3, "category": "theory" },
+        { "name": "OOP Lab", "credits": 2, "category": "practical" }
+      ],
+      "Semester 4": [
+        { "name": "Theory of Computation", "credits": 4, "category": "theory" },
+        { "name": "Database Management Systems", "credits": 4, "category": "problem-solving" },
+        { "name": "Design and Analysis of Algorithms", "credits": 4, "category": "problem-solving" },
+        { "name": "Microprocessors", "credits": 3, "category": "theory" },
+        { "name": "DBMS Lab", "credits": 2, "category": "practical" },
+        { "name": "Open Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 5": [
+        { "name": "Computer Networks", "credits": 4, "category": "theory" },
+        { "name": "Software Engineering", "credits": 3, "category": "theory" },
+        { "name": "Compiler Design", "credits": 4, "category": "theory" },
+        { "name": "Web Technologies", "credits": 3, "category": "problem-solving" },
+        { "name": "Networks Lab", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 6": [
+        { "name": "Artificial Intelligence", "credits": 4, "category": "problem-solving" },
+        { "name": "Machine Learning", "credits": 4, "category": "problem-solving" },
+        { "name": "Cloud Computing", "credits": 3, "category": "theory" },
+        { "name": "Information Security", "credits": 3, "category": "theory" },
+        { "name": "Mini Project", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective II", "credits": 3, "category": "other" }
+      ],
+      "Semester 7": [
+        { "name": "Big Data Analytics", "credits": 4, "category": "problem-solving" },
+        { "name": "Internet of Things", "credits": 3, "category": "theory" },
+        { "name": "Mobile Application Development", "credits": 3, "category": "problem-solving" },
+        { "name": "Open Elective II", "credits": 3, "category": "other" },
+        { "name": "Project Phase I", "credits": 4, "category": "practical" }
+      ],
+      "Semester 8": [
+        { "name": "Project Phase II", "credits": 8, "category": "practical" },
+        { "name": "Industry Internship", "credits": 4, "category": "practical" },
+        { "name": "Seminar", "credits": 2, "category": "other" }
+      ]
+    },
+    "Information Technology": {
+      "Semester 1": [
+        { "name": "Engineering Mathematics I", "credits": 4, "category": "theory" },
+        { "name": "Engineering Physics", "credits": 3, "category": "theory" },
+        { "name": "Programming Fundamentals", "credits": 4, "category": "problem-solving" },
+        { "name": "Basic Electrical Engineering", "credits": 3, "category": "theory" },
+        { "name": "Engineering Graphics", "credits": 3, "category": "practical" },
+        { "name": "Communication Skills", "credits": 2, "category": "other" }
+      ],
+      "Semester 2": [
+        { "name": "Engineering Mathematics II", "credits": 4, "category": "theory" },
+        { "name": "Engineering Chemistry", "credits": 3, "category": "theory" },
+        { "name": "Data Structures", "credits": 4, "category": "problem-solving" },
+        { "name": "Digital Electronics", "credits": 3, "category": "theory" },
+        { "name": "Environmental Studies", "credits": 2, "category": "other" },
+        { "name": "Engineering Mechanics", "credits": 3, "category": "theory" }
+      ],
+      "Semester 3": [
+        { "name": "Discrete Mathematics", "credits": 4, "category": "theory" },
+        { "name": "Computer Organization", "credits": 4, "category": "theory" },
+        { "name": "Object Oriented Programming", "credits": 4, "category": "problem-solving" },
+        { "name": "Operating Systems", "credits": 4, "category": "theory" },
+        { "name": "Probability and Statistics", "credits": 3, "category": "theory" },
+        { "name": "OOP Lab", "credits": 2, "category": "practical" }
+      ],
+      "Semester 4": [
+        { "name": "Database Management Systems", "credits": 4, "category": "problem-solving" },
+        { "name": "Design and Analysis of Algorithms", "credits": 4, "category": "problem-solving" },
+        { "name": "Software Engineering", "credits": 3, "category": "theory" },
+        { "name": "Microprocessors", "credits": 3, "category": "theory" },
+        { "name": "DBMS Lab", "credits": 2, "category": "practical" },
+        { "name": "Open Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 5": [
+        { "name": "Computer Networks", "credits": 4, "category": "theory" },
+        { "name": "Web Technologies", "credits": 3, "category": "problem-solving" },
+        { "name": "Information Security", "credits": 3, "category": "theory" },
+        { "name": "Cloud Computing", "credits": 3, "category": "theory" },
+        { "name": "Networks Lab", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 6": [
+        { "name": "Data Mining", "credits": 4, "category": "problem-solving" },
+        { "name": "Machine Learning", "credits": 4, "category": "problem-solving" },
+        { "name": "Mobile Application Development", "credits": 3, "category": "problem-solving" },
+        { "name": "Big Data Analytics", "credits": 3, "category": "problem-solving" },
+        { "name": "Mini Project", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective II", "credits": 3, "category": "other" }
+      ],
+      "Semester 7": [
+        { "name": "Internet of Things", "credits": 3, "category": "theory" },
+        { "name": "DevOps", "credits": 3, "category": "problem-solving" },
+        { "name": "Open Elective II", "credits": 3, "category": "other" },
+        { "name": "Project Phase I", "credits": 4, "category": "practical" },
+        { "name": "Industry Practice", "credits": 2, "category": "practical" }
+      ],
+      "Semester 8": [
+        { "name": "Project Phase II", "credits": 8, "category": "practical" },
+        { "name": "Industry Internship", "credits": 4, "category": "practical" },
+        { "name": "Seminar", "credits": 2, "category": "other" }
+      ]
+    },
+    "Electronics and Communication": {
+      "Semester 1": [
+        { "name": "Engineering Mathematics I", "credits": 4, "category": "theory" },
+        { "name": "Engineering Physics", "credits": 3, "category": "theory" },
+        { "name": "Programming in C", "credits": 3, "category": "problem-solving" },
+        { "name": "Basic Electrical Engineering", "credits": 3, "category": "theory" },
+        { "name": "Engineering Graphics", "credits": 3, "category": "practical" },
+        { "name": "Communication Skills", "credits": 2, "category": "other" }
+      ],
+      "Semester 2": [
+        { "name": "Engineering Mathematics II", "credits": 4, "category": "theory" },
+        { "name": "Engineering Chemistry", "credits": 3, "category": "theory" },
+        { "name": "Electronic Devices", "credits": 4, "category": "theory" },
+        { "name": "Digital Electronics", "credits": 3, "category": "theory" },
+        { "name": "Environmental Studies", "credits": 2, "category": "other" },
+        { "name": "Engineering Mechanics", "credits": 3, "category": "theory" }
+      ],
+      "Semester 3": [
+        { "name": "Signals and Systems", "credits": 4, "category": "theory" },
+        { "name": "Network Theory", "credits": 4, "category": "theory" },
+        { "name": "Analog Circuits", "credits": 4, "category": "theory" },
+        { "name": "Digital System Design", "credits": 4, "category": "problem-solving" },
+        { "name": "Electronics Lab I", "credits": 2, "category": "practical" },
+        { "name": "Probability and Statistics", "credits": 3, "category": "theory" }
+      ],
+      "Semester 4": [
+        { "name": "Microprocessors and Microcontrollers", "credits": 4, "category": "theory" },
+        { "name": "Communication Systems", "credits": 4, "category": "theory" },
+        { "name": "Control Systems", "credits": 3, "category": "theory" },
+        { "name": "Electromagnetic Theory", "credits": 3, "category": "theory" },
+        { "name": "Electronics Lab II", "credits": 2, "category": "practical" },
+        { "name": "Open Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 5": [
+        { "name": "Digital Signal Processing", "credits": 4, "category": "problem-solving" },
+        { "name": "VLSI Design", "credits": 4, "category": "theory" },
+        { "name": "Antenna and Wave Propagation", "credits": 3, "category": "theory" },
+        { "name": "Embedded Systems", "credits": 3, "category": "problem-solving" },
+        { "name": "DSP Lab", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 6": [
+        { "name": "Wireless Communication", "credits": 3, "category": "theory" },
+        { "name": "Computer Networks", "credits": 3, "category": "theory" },
+        { "name": "Optical Communication", "credits": 3, "category": "theory" },
+        { "name": "RF and Microwave Engineering", "credits": 3, "category": "theory" },
+        { "name": "Mini Project", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective II", "credits": 3, "category": "other" }
+      ],
+      "Semester 7": [
+        { "name": "IoT Systems", "credits": 3, "category": "problem-solving" },
+        { "name": "Advanced Communication Systems", "credits": 3, "category": "theory" },
+        { "name": "Open Elective II", "credits": 3, "category": "other" },
+        { "name": "Project Phase I", "credits": 4, "category": "practical" },
+        { "name": "Industry Practice", "credits": 2, "category": "practical" }
+      ],
+      "Semester 8": [
+        { "name": "Project Phase II", "credits": 8, "category": "practical" },
+        { "name": "Industry Internship", "credits": 4, "category": "practical" },
+        { "name": "Seminar", "credits": 2, "category": "other" }
+      ]
+    },
+    "Mechanical": {
+      "Semester 1": [
+        { "name": "Engineering Mathematics I", "credits": 4, "category": "theory" },
+        { "name": "Engineering Physics", "credits": 3, "category": "theory" },
+        { "name": "Engineering Chemistry", "credits": 3, "category": "theory" },
+        { "name": "Basic Electrical Engineering", "credits": 3, "category": "theory" },
+        { "name": "Engineering Graphics", "credits": 3, "category": "practical" },
+        { "name": "Communication Skills", "credits": 2, "category": "other" }
+      ],
+      "Semester 2": [
+        { "name": "Engineering Mathematics II", "credits": 4, "category": "theory" },
+        { "name": "Engineering Mechanics", "credits": 4, "category": "theory" },
+        { "name": "Basic Electronics", "credits": 3, "category": "theory" },
+        { "name": "Thermodynamics", "credits": 3, "category": "theory" },
+        { "name": "Environmental Studies", "credits": 2, "category": "other" },
+        { "name": "Workshop Practice", "credits": 2, "category": "practical" }
+      ],
+      "Semester 3": [
+        { "name": "Strength of Materials", "credits": 4, "category": "theory" },
+        { "name": "Fluid Mechanics", "credits": 4, "category": "theory" },
+        { "name": "Manufacturing Processes", "credits": 4, "category": "theory" },
+        { "name": "Kinematics of Machines", "credits": 3, "category": "theory" },
+        { "name": "Material Science", "credits": 3, "category": "theory" },
+        { "name": "Mechanical Lab I", "credits": 2, "category": "practical" }
+      ],
+      "Semester 4": [
+        { "name": "Dynamics of Machines", "credits": 4, "category": "theory" },
+        { "name": "Heat Transfer", "credits": 3, "category": "theory" },
+        { "name": "Machine Design I", "credits": 4, "category": "theory" },
+        { "name": "Metrology and Measurements", "credits": 3, "category": "theory" },
+        { "name": "Mechanical Lab II", "credits": 2, "category": "practical" },
+        { "name": "Open Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 5": [
+        { "name": "Machine Design II", "credits": 4, "category": "theory" },
+        { "name": "IC Engines", "credits": 3, "category": "theory" },
+        { "name": "CAD/CAM", "credits": 3, "category": "problem-solving" },
+        { "name": "Refrigeration and Air Conditioning", "credits": 3, "category": "theory" },
+        { "name": "CAD Lab", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 6": [
+        { "name": "Finite Element Methods", "credits": 3, "category": "problem-solving" },
+        { "name": "Mechatronics", "credits": 3, "category": "theory" },
+        { "name": "Power Plant Engineering", "credits": 3, "category": "theory" },
+        { "name": "Industrial Engineering", "credits": 3, "category": "theory" },
+        { "name": "Mini Project", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective II", "credits": 3, "category": "other" }
+      ],
+      "Semester 7": [
+        { "name": "Robotics", "credits": 3, "category": "problem-solving" },
+        { "name": "Automobile Engineering", "credits": 3, "category": "theory" },
+        { "name": "Open Elective II", "credits": 3, "category": "other" },
+        { "name": "Project Phase I", "credits": 4, "category": "practical" },
+        { "name": "Industry Practice", "credits": 2, "category": "practical" }
+      ],
+      "Semester 8": [
+        { "name": "Project Phase II", "credits": 8, "category": "practical" },
+        { "name": "Industry Internship", "credits": 4, "category": "practical" },
+        { "name": "Seminar", "credits": 2, "category": "other" }
+      ]
+    },
+    "Civil": {
+      "Semester 1": [
+        { "name": "Engineering Mathematics I", "credits": 4, "category": "theory" },
+        { "name": "Engineering Physics", "credits": 3, "category": "theory" },
+        { "name": "Engineering Chemistry", "credits": 3, "category": "theory" },
+        { "name": "Basic Electrical Engineering", "credits": 3, "category": "theory" },
+        { "name": "Engineering Graphics", "credits": 3, "category": "practical" },
+        { "name": "Communication Skills", "credits": 2, "category": "other" }
+      ],
+      "Semester 2": [
+        { "name": "Engineering Mathematics II", "credits": 4, "category": "theory" },
+        { "name": "Engineering Mechanics", "credits": 4, "category": "theory" },
+        { "name": "Surveying I", "credits": 3, "category": "theory" },
+        { "name": "Building Materials", "credits": 3, "category": "theory" },
+        { "name": "Environmental Studies", "credits": 2, "category": "other" },
+        { "name": "Workshop Practice", "credits": 2, "category": "practical" }
+      ],
+      "Semester 3": [
+        { "name": "Strength of Materials", "credits": 4, "category": "theory" },
+        { "name": "Fluid Mechanics", "credits": 4, "category": "theory" },
+        { "name": "Surveying II", "credits": 3, "category": "theory" },
+        { "name": "Concrete Technology", "credits": 3, "category": "theory" },
+        { "name": "Civil Engineering Drawing", "credits": 2, "category": "practical" },
+        { "name": "Material Testing Lab", "credits": 2, "category": "practical" }
+      ],
+      "Semester 4": [
+        { "name": "Structural Analysis I", "credits": 4, "category": "theory" },
+        { "name": "Geotechnical Engineering I", "credits": 3, "category": "theory" },
+        { "name": "Hydraulics", "credits": 3, "category": "theory" },
+        { "name": "Transportation Engineering I", "credits": 3, "category": "theory" },
+        { "name": "Surveying Lab", "credits": 2, "category": "practical" },
+        { "name": "Open Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 5": [
+        { "name": "Structural Analysis II", "credits": 4, "category": "theory" },
+        { "name": "Geotechnical Engineering II", "credits": 3, "category": "theory" },
+        { "name": "Design of RCC Structures", "credits": 4, "category": "problem-solving" },
+        { "name": "Transportation Engineering II", "credits": 3, "category": "theory" },
+        { "name": "Concrete Lab", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 6": [
+        { "name": "Design of Steel Structures", "credits": 4, "category": "problem-solving" },
+        { "name": "Water Resources Engineering", "credits": 3, "category": "theory" },
+        { "name": "Environmental Engineering I", "credits": 3, "category": "theory" },
+        { "name": "Construction Planning", "credits": 3, "category": "theory" },
+        { "name": "Mini Project", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective II", "credits": 3, "category": "other" }
+      ],
+      "Semester 7": [
+        { "name": "Environmental Engineering II", "credits": 3, "category": "theory" },
+        { "name": "Remote Sensing and GIS", "credits": 3, "category": "theory" },
+        { "name": "Open Elective II", "credits": 3, "category": "other" },
+        { "name": "Project Phase I", "credits": 4, "category": "practical" },
+        { "name": "Industry Practice", "credits": 2, "category": "practical" }
+      ],
+      "Semester 8": [
+        { "name": "Project Phase II", "credits": 8, "category": "practical" },
+        { "name": "Industry Internship", "credits": 4, "category": "practical" },
+        { "name": "Seminar", "credits": 2, "category": "other" }
+      ]
+    },
+    "Electrical": {
+      "Semester 1": [
+        { "name": "Engineering Mathematics I", "credits": 4, "category": "theory" },
+        { "name": "Engineering Physics", "credits": 3, "category": "theory" },
+        { "name": "Programming in C", "credits": 3, "category": "problem-solving" },
+        { "name": "Basic Electrical Engineering", "credits": 4, "category": "theory" },
+        { "name": "Engineering Graphics", "credits": 3, "category": "practical" },
+        { "name": "Communication Skills", "credits": 2, "category": "other" }
+      ],
+      "Semester 2": [
+        { "name": "Engineering Mathematics II", "credits": 4, "category": "theory" },
+        { "name": "Engineering Chemistry", "credits": 3, "category": "theory" },
+        { "name": "Electrical Circuits", "credits": 4, "category": "theory" },
+        { "name": "Electronic Devices", "credits": 3, "category": "theory" },
+        { "name": "Environmental Studies", "credits": 2, "category": "other" },
+        { "name": "Engineering Mechanics", "credits": 3, "category": "theory" }
+      ],
+      "Semester 3": [
+        { "name": "Electromagnetic Fields", "credits": 4, "category": "theory" },
+        { "name": "Analog Electronics", "credits": 3, "category": "theory" },
+        { "name": "Signals and Systems", "credits": 4, "category": "theory" },
+        { "name": "Electrical Machines I", "credits": 4, "category": "theory" },
+        { "name": "Electrical Measurements", "credits": 3, "category": "theory" },
+        { "name": "Electrical Lab I", "credits": 2, "category": "practical" }
+      ],
+      "Semester 4": [
+        { "name": "Power Systems I", "credits": 4, "category": "theory" },
+        { "name": "Control Systems", "credits": 3, "category": "theory" },
+        { "name": "Electrical Machines II", "credits": 4, "category": "theory" },
+        { "name": "Digital Electronics", "credits": 3, "category": "theory" },
+        { "name": "Electrical Lab II", "credits": 2, "category": "practical" },
+        { "name": "Open Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 5": [
+        { "name": "Power Systems II", "credits": 4, "category": "theory" },
+        { "name": "Power Electronics", "credits": 4, "category": "theory" },
+        { "name": "Microprocessors", "credits": 3, "category": "theory" },
+        { "name": "Electrical Drives", "credits": 3, "category": "theory" },
+        { "name": "Power Electronics Lab", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 6": [
+        { "name": "Renewable Energy Systems", "credits": 3, "category": "theory" },
+        { "name": "High Voltage Engineering", "credits": 3, "category": "theory" },
+        { "name": "Power System Protection", "credits": 3, "category": "theory" },
+        { "name": "Electrical Machine Design", "credits": 3, "category": "theory" },
+        { "name": "Mini Project", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective II", "credits": 3, "category": "other" }
+      ],
+      "Semester 7": [
+        { "name": "Smart Grid", "credits": 3, "category": "theory" },
+        { "name": "Electric Vehicles", "credits": 3, "category": "theory" },
+        { "name": "Open Elective II", "credits": 3, "category": "other" },
+        { "name": "Project Phase I", "credits": 4, "category": "practical" },
+        { "name": "Industry Practice", "credits": 2, "category": "practical" }
+      ],
+      "Semester 8": [
+        { "name": "Project Phase II", "credits": 8, "category": "practical" },
+        { "name": "Industry Internship", "credits": 4, "category": "practical" },
+        { "name": "Seminar", "credits": 2, "category": "other" }
+      ]
+    }
+  },
+  "BCA": {
+    "General": {
+      "Semester 1": [
+        { "name": "Mathematics I", "credits": 4, "category": "theory" },
+        { "name": "Fundamentals of Computers", "credits": 4, "category": "theory" },
+        { "name": "Programming in C", "credits": 4, "category": "problem-solving" },
+        { "name": "Digital Logic", "credits": 3, "category": "theory" },
+        { "name": "Business Communication", "credits": 2, "category": "other" },
+        { "name": "C Programming Lab", "credits": 2, "category": "practical" }
+      ],
+      "Semester 2": [
+        { "name": "Mathematics II", "credits": 4, "category": "theory" },
+        { "name": "Computer Organization", "credits": 4, "category": "theory" },
+        { "name": "Data Structures", "credits": 4, "category": "problem-solving" },
+        { "name": "Accounting and Financial Management", "credits": 3, "category": "other" },
+        { "name": "Environmental Studies", "credits": 2, "category": "other" },
+        { "name": "Data Structures Lab", "credits": 2, "category": "practical" }
+      ],
+      "Semester 3": [
+        { "name": "Object Oriented Programming", "credits": 4, "category": "problem-solving" },
+        { "name": "Operating Systems", "credits": 4, "category": "theory" },
+        { "name": "Database Management Systems", "credits": 4, "category": "problem-solving" },
+        { "name": "Discrete Mathematics", "credits": 3, "category": "theory" },
+        { "name": "DBMS Lab", "credits": 2, "category": "practical" },
+        { "name": "OOP Lab", "credits": 2, "category": "practical" }
+      ],
+      "Semester 4": [
+        { "name": "Computer Networks", "credits": 4, "category": "theory" },
+        { "name": "Software Engineering", "credits": 3, "category": "theory" },
+        { "name": "Web Technologies", "credits": 3, "category": "problem-solving" },
+        { "name": "System Analysis and Design", "credits": 3, "category": "theory" },
+        { "name": "Web Tech Lab", "credits": 2, "category": "practical" },
+        { "name": "Soft Skills", "credits": 2, "category": "other" }
+      ],
+      "Semester 5": [
+        { "name": "Java Programming", "credits": 4, "category": "problem-solving" },
+        { "name": "Python Programming", "credits": 4, "category": "problem-solving" },
+        { "name": "Data Mining", "credits": 3, "category": "problem-solving" },
+        { "name": "Mobile Application Development", "credits": 3, "category": "problem-solving" },
+        { "name": "Java Lab", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 6": [
+        { "name": "Artificial Intelligence", "credits": 4, "category": "problem-solving" },
+        { "name": "Cloud Computing", "credits": 3, "category": "theory" },
+        { "name": "Information Security", "credits": 3, "category": "theory" },
+        { "name": "E-Commerce", "credits": 3, "category": "other" },
+        { "name": "Mini Project", "credits": 2, "category": "practical" },
+        { "name": "Professional Elective II", "credits": 3, "category": "other" }
+      ],
+      "Semester 7": [
+        { "name": "Big Data Analytics", "credits": 4, "category": "problem-solving" },
+        { "name": "Internet of Things", "credits": 3, "category": "theory" },
+        { "name": "Open Elective", "credits": 3, "category": "other" },
+        { "name": "Project Phase I", "credits": 4, "category": "practical" },
+        { "name": "Industry Practice", "credits": 2, "category": "practical" }
+      ],
+      "Semester 8": [
+        { "name": "Project Phase II", "credits": 8, "category": "practical" },
+        { "name": "Industry Internship", "credits": 4, "category": "practical" },
+        { "name": "Seminar", "credits": 2, "category": "other" }
+      ]
+    }
+  },
+  "BSc": {
+    "Computer Science": {
+      "Semester 1": [
+        { "name": "Mathematics I", "credits": 4, "category": "theory" },
+        { "name": "Programming Fundamentals", "credits": 4, "category": "problem-solving" },
+        { "name": "Computer Fundamentals", "credits": 3, "category": "theory" },
+        { "name": "Digital Logic", "credits": 3, "category": "theory" },
+        { "name": "Communication Skills", "credits": 2, "category": "other" }
+      ],
+      "Semester 2": [
+        { "name": "Mathematics II", "credits": 4, "category": "theory" },
+        { "name": "Data Structures", "credits": 4, "category": "problem-solving" },
+        { "name": "Computer Organization", "credits": 3, "category": "theory" },
+        { "name": "Discrete Mathematics", "credits": 3, "category": "theory" },
+        { "name": "Data Structures Lab", "credits": 2, "category": "practical" }
+      ],
+      "Semester 3": [
+        { "name": "Object Oriented Programming", "credits": 4, "category": "problem-solving" },
+        { "name": "Operating Systems", "credits": 4, "category": "theory" },
+        { "name": "Database Management Systems", "credits": 4, "category": "problem-solving" },
+        { "name": "Computer Networks", "credits": 3, "category": "theory" },
+        { "name": "DBMS Lab", "credits": 2, "category": "practical" }
+      ],
+      "Semester 4": [
+        { "name": "Web Technologies", "credits": 3, "category": "problem-solving" },
+        { "name": "Software Engineering", "credits": 3, "category": "theory" },
+        { "name": "Design and Analysis of Algorithms", "credits": 4, "category": "problem-solving" },
+        { "name": "Microprocessors", "credits": 3, "category": "theory" },
+        { "name": "Web Tech Lab", "credits": 2, "category": "practical" }
+      ],
+      "Semester 5": [
+        { "name": "Java Programming", "credits": 4, "category": "problem-solving" },
+        { "name": "Python Programming", "credits": 3, "category": "problem-solving" },
+        { "name": "Computer Security", "credits": 3, "category": "theory" },
+        { "name": "Data Mining", "credits": 3, "category": "problem-solving" },
+        { "name": "Mini Project", "credits": 2, "category": "practical" }
+      ],
+      "Semester 6": [
+        { "name": "Artificial Intelligence", "credits": 4, "category": "problem-solving" },
+        { "name": "Cloud Computing", "credits": 3, "category": "theory" },
+        { "name": "Mobile Application Development", "credits": 3, "category": "problem-solving" },
+        { "name": "Elective I", "credits": 3, "category": "other" },
+        { "name": "Project Phase I", "credits": 3, "category": "practical" }
+      ],
+      "Semester 7": [
+        { "name": "Big Data Analytics", "credits": 4, "category": "problem-solving" },
+        { "name": "Internet of Things", "credits": 3, "category": "theory" },
+        { "name": "Elective II", "credits": 3, "category": "other" },
+        { "name": "Project Phase II", "credits": 4, "category": "practical" },
+        { "name": "Internship", "credits": 2, "category": "practical" }
+      ],
+      "Semester 8": [
+        { "name": "Final Project", "credits": 8, "category": "practical" },
+        { "name": "Seminar", "credits": 2, "category": "other" },
+        { "name": "Industry Internship", "credits": 4, "category": "practical" }
+      ]
+    },
+    "Mathematics": {
+      "Semester 1": [
+        { "name": "Calculus I", "credits": 4, "category": "theory" },
+        { "name": "Linear Algebra", "credits": 4, "category": "theory" },
+        { "name": "Discrete Mathematics", "credits": 3, "category": "theory" },
+        { "name": "Programming Basics", "credits": 3, "category": "problem-solving" },
+        { "name": "Communication Skills", "credits": 2, "category": "other" }
+      ],
+      "Semester 2": [
+        { "name": "Calculus II", "credits": 4, "category": "theory" },
+        { "name": "Differential Equations", "credits": 4, "category": "theory" },
+        { "name": "Statistics I", "credits": 3, "category": "theory" },
+        { "name": "Mathematical Programming", "credits": 3, "category": "problem-solving" },
+        { "name": "Environmental Studies", "credits": 2, "category": "other" }
+      ],
+      "Semester 3": [
+        { "name": "Abstract Algebra", "credits": 4, "category": "theory" },
+        { "name": "Real Analysis I", "credits": 4, "category": "theory" },
+        { "name": "Numerical Methods", "credits": 3, "category": "problem-solving" },
+        { "name": "Probability Theory", "credits": 3, "category": "theory" },
+        { "name": "Operations Research", "credits": 3, "category": "problem-solving" }
+      ],
+      "Semester 4": [
+        { "name": "Real Analysis II", "credits": 4, "category": "theory" },
+        { "name": "Complex Analysis", "credits": 4, "category": "theory" },
+        { "name": "Statistics II", "credits": 3, "category": "theory" },
+        { "name": "Mathematical Modeling", "credits": 3, "category": "problem-solving" },
+        { "name": "Scientific Computing", "credits": 3, "category": "problem-solving" }
+      ],
+      "Semester 5": [
+        { "name": "Partial Differential Equations", "credits": 4, "category": "theory" },
+        { "name": "Topology", "credits": 3, "category": "theory" },
+        { "name": "Linear Programming", "credits": 3, "category": "problem-solving" },
+        { "name": "Numerical Analysis", "credits": 3, "category": "problem-solving" },
+        { "name": "Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 6": [
+        { "name": "Integral Equations", "credits": 3, "category": "theory" },
+        { "name": "Graph Theory", "credits": 3, "category": "theory" },
+        { "name": "Stochastic Processes", "credits": 3, "category": "theory" },
+        { "name": "Optimization Techniques", "credits": 3, "category": "problem-solving" },
+        { "name": "Project", "credits": 2, "category": "practical" }
+      ],
+      "Semester 7": [
+        { "name": "Functional Analysis", "credits": 3, "category": "theory" },
+        { "name": "Measure Theory", "credits": 3, "category": "theory" },
+        { "name": "Elective II", "credits": 3, "category": "other" },
+        { "name": "Seminar", "credits": 2, "category": "other" },
+        { "name": "Project Phase I", "credits": 3, "category": "practical" }
+      ],
+      "Semester 8": [
+        { "name": "Project Phase II", "credits": 6, "category": "practical" },
+        { "name": "Internship", "credits": 3, "category": "practical" },
+        { "name": "Elective III", "credits": 3, "category": "other" }
+      ]
+    },
+    "Physics": {
+      "Semester 1": [
+        { "name": "Mechanics", "credits": 4, "category": "theory" },
+        { "name": "Mathematics for Physics", "credits": 4, "category": "theory" },
+        { "name": "Physics Lab I", "credits": 2, "category": "practical" },
+        { "name": "Communication Skills", "credits": 2, "category": "other" },
+        { "name": "Computer Fundamentals", "credits": 2, "category": "other" }
+      ],
+      "Semester 2": [
+        { "name": "Electromagnetism", "credits": 4, "category": "theory" },
+        { "name": "Waves and Optics", "credits": 4, "category": "theory" },
+        { "name": "Physics Lab II", "credits": 2, "category": "practical" },
+        { "name": "Mathematical Methods", "credits": 3, "category": "theory" },
+        { "name": "Environmental Studies", "credits": 2, "category": "other" }
+      ],
+      "Semester 3": [
+        { "name": "Quantum Mechanics I", "credits": 4, "category": "theory" },
+        { "name": "Thermal Physics", "credits": 4, "category": "theory" },
+        { "name": "Electronics I", "credits": 3, "category": "theory" },
+        { "name": "Physics Lab III", "credits": 2, "category": "practical" },
+        { "name": "Mathematical Physics", "credits": 3, "category": "theory" }
+      ],
+      "Semester 4": [
+        { "name": "Quantum Mechanics II", "credits": 4, "category": "theory" },
+        { "name": "Solid State Physics", "credits": 4, "category": "theory" },
+        { "name": "Electronics II", "credits": 3, "category": "theory" },
+        { "name": "Physics Lab IV", "credits": 2, "category": "practical" },
+        { "name": "Computational Physics", "credits": 3, "category": "problem-solving" }
+      ],
+      "Semester 5": [
+        { "name": "Nuclear Physics", "credits": 4, "category": "theory" },
+        { "name": "Statistical Mechanics", "credits": 4, "category": "theory" },
+        { "name": "Laser Physics", "credits": 3, "category": "theory" },
+        { "name": "Physics Lab V", "credits": 2, "category": "practical" },
+        { "name": "Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 6": [
+        { "name": "Particle Physics", "credits": 3, "category": "theory" },
+        { "name": "Astrophysics", "credits": 3, "category": "theory" },
+        { "name": "Electrodynamics", "credits": 3, "category": "theory" },
+        { "name": "Physics Lab VI", "credits": 2, "category": "practical" },
+        { "name": "Project", "credits": 2, "category": "practical" }
+      ],
+      "Semester 7": [
+        { "name": "Nanotechnology", "credits": 3, "category": "theory" },
+        { "name": "Materials Science", "credits": 3, "category": "theory" },
+        { "name": "Elective II", "credits": 3, "category": "other" },
+        { "name": "Seminar", "credits": 2, "category": "other" },
+        { "name": "Project Phase I", "credits": 3, "category": "practical" }
+      ],
+      "Semester 8": [
+        { "name": "Project Phase II", "credits": 6, "category": "practical" },
+        { "name": "Internship", "credits": 3, "category": "practical" },
+        { "name": "Elective III", "credits": 3, "category": "other" }
+      ]
+    },
+    "Chemistry": {
+      "Semester 1": [
+        { "name": "Inorganic Chemistry I", "credits": 4, "category": "theory" },
+        { "name": "Physical Chemistry I", "credits": 4, "category": "theory" },
+        { "name": "Organic Chemistry I", "credits": 4, "category": "theory" },
+        { "name": "Chemistry Lab I", "credits": 2, "category": "practical" },
+        { "name": "Communication Skills", "credits": 2, "category": "other" }
+      ],
+      "Semester 2": [
+        { "name": "Inorganic Chemistry II", "credits": 4, "category": "theory" },
+        { "name": "Physical Chemistry II", "credits": 4, "category": "theory" },
+        { "name": "Organic Chemistry II", "credits": 4, "category": "theory" },
+        { "name": "Chemistry Lab II", "credits": 2, "category": "practical" },
+        { "name": "Environmental Studies", "credits": 2, "category": "other" }
+      ],
+      "Semester 3": [
+        { "name": "Analytical Chemistry", "credits": 4, "category": "theory" },
+        { "name": "Thermodynamics", "credits": 4, "category": "theory" },
+        { "name": "Organic Reactions", "credits": 3, "category": "theory" },
+        { "name": "Chemistry Lab III", "credits": 2, "category": "practical" },
+        { "name": "Mathematics for Chemists", "credits": 3, "category": "theory" }
+      ],
+      "Semester 4": [
+        { "name": "Coordination Chemistry", "credits": 4, "category": "theory" },
+        { "name": "Chemical Kinetics", "credits": 4, "category": "theory" },
+        { "name": "Spectroscopy", "credits": 3, "category": "theory" },
+        { "name": "Chemistry Lab IV", "credits": 2, "category": "practical" },
+        { "name": "Computational Chemistry", "credits": 3, "category": "problem-solving" }
+      ],
+      "Semester 5": [
+        { "name": "Industrial Chemistry", "credits": 4, "category": "theory" },
+        { "name": "Biochemistry", "credits": 3, "category": "theory" },
+        { "name": "Polymer Chemistry", "credits": 3, "category": "theory" },
+        { "name": "Chemistry Lab V", "credits": 2, "category": "practical" },
+        { "name": "Elective I", "credits": 3, "category": "other" }
+      ],
+      "Semester 6": [
+        { "name": "Environmental Chemistry", "credits": 3, "category": "theory" },
+        { "name": "Medicinal Chemistry", "credits": 3, "category": "theory" },
+        { "name": "Materials Chemistry", "credits": 3, "category": "theory" },
+        { "name": "Chemistry Lab VI", "credits": 2, "category": "practical" },
+        { "name": "Project", "credits": 2, "category": "practical" }
+      ],
+      "Semester 7": [
+        { "name": "Green Chemistry", "credits": 3, "category": "theory" },
+        { "name": "Nanochemistry", "credits": 3, "category": "theory" },
+        { "name": "Elective II", "credits": 3, "category": "other" },
+        { "name": "Seminar", "credits": 2, "category": "other" },
+        { "name": "Project Phase I", "credits": 3, "category": "practical" }
+      ],
+      "Semester 8": [
+        { "name": "Project Phase II", "credits": 6, "category": "practical" },
+        { "name": "Internship", "credits": 3, "category": "practical" },
+        { "name": "Elective III", "credits": 3, "category": "other" }
+      ]
+    }
+  }
+}

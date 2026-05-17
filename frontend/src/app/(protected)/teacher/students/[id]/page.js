@@ -24,6 +24,7 @@ import {
   X,
   Loader2,
 } from "lucide-react";
+import { getPerformanceTag, getPerformanceTagClasses } from "../../../../../lib/performance-tag";
 import {
   Bar,
   BarChart,
@@ -43,10 +44,16 @@ export default function StudentDetailPage() {
   const [data, setData] = useState(null);
   const [expandedSem, setExpandedSem] = useState(null);
   const [deleting, setDeleting] = useState(null);
+  const [deletingQuiz, setDeletingQuiz] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [editForm, setEditForm] = useState(null);
   const [editSaving, setEditSaving] = useState(false);
   const [editMsg, setEditMsg] = useState("");
+  const [expandedQuiz, setExpandedQuiz] = useState(null);
+  const [quizEditId, setQuizEditId] = useState(null);
+  const [quizEditForm, setQuizEditForm] = useState(null);
+  const [quizEditQuestions, setQuizEditQuestions] = useState([]);
+  const [quizEditSaving, setQuizEditSaving] = useState(false);
 
   async function load() {
     try {
@@ -55,7 +62,9 @@ export default function StudentDetailPage() {
       // Pre-fill edit form with current student data
       setEditForm({
         name: res.student.name || "",
+        course: res.student.profile?.course || "",
         department: res.student.profile?.department || "",
+        semester: res.student.profile?.semester || "",
         year: res.student.profile?.year || "",
         targetGpa: res.student.profile?.targetGpa ?? "",
         weeklyStudyHours: res.student.profile?.weeklyStudyHours ?? "",
@@ -85,6 +94,74 @@ export default function StudentDetailPage() {
     }
   }
 
+  async function deleteQuiz(quizId) {
+    if (!confirm("Delete this quiz? This cannot be undone.")) return;
+    setDeletingQuiz(quizId);
+    try {
+      await apiRequest(`/teacher/quizzes/${quizId}`, { method: "DELETE", token });
+      await load();
+    } catch (e) {
+      alert(e.message);
+    } finally {
+      setDeletingQuiz(null);
+    }
+  }
+
+  function openQuizEdit(quiz) {
+    setQuizEditId(quiz._id);
+    setQuizEditForm({
+      subject: quiz.subject || "",
+      topic: quiz.topic || "",
+      difficulty: quiz.difficulty || "medium",
+      dueAt: quiz.dueAt ? new Date(quiz.dueAt).toISOString().slice(0, 16) : "",
+      mandatory: Boolean(quiz.mandatory),
+    });
+    setQuizEditQuestions(
+      (quiz.questions || []).map((q) => ({
+        question: q.question || "",
+        options: Array.isArray(q.options) ? q.options : [],
+        answer: q.answer || "",
+      }))
+    );
+  }
+
+  function updateQuizQuestion(index, patch) {
+    setQuizEditQuestions((prev) => prev.map((q, i) => (i === index ? { ...q, ...patch } : q)));
+  }
+
+  function updateQuizOption(qIndex, optIndex, value) {
+    setQuizEditQuestions((prev) =>
+      prev.map((q, i) =>
+        i === qIndex
+          ? { ...q, options: q.options.map((opt, oi) => (oi === optIndex ? value : opt)) }
+          : q
+      )
+    );
+  }
+
+  async function saveQuizEdit() {
+    setQuizEditSaving(true);
+    try {
+      await apiRequest(`/teacher/quizzes/${quizEditId}`, {
+        method: "PUT",
+        token,
+        body: {
+          ...quizEditForm,
+          dueAt: quizEditForm.dueAt ? new Date(quizEditForm.dueAt).toISOString() : null,
+          questions: quizEditQuestions,
+        },
+      });
+      setQuizEditId(null);
+      setQuizEditForm(null);
+      setQuizEditQuestions([]);
+      await load();
+    } catch (e) {
+      alert(e.message);
+    } finally {
+      setQuizEditSaving(false);
+    }
+  }
+
   async function saveStudentProfile(e) {
     e.preventDefault();
     setEditSaving(true);
@@ -96,7 +173,9 @@ export default function StudentDetailPage() {
         body: {
           name: editForm.name,
           profile: {
+            course: editForm.course,
             department: editForm.department,
+            semester: editForm.semester,
             year: editForm.year,
             targetGpa: editForm.targetGpa === "" ? "" : Number(editForm.targetGpa),
             weeklyStudyHours: editForm.weeklyStudyHours === "" ? "" : Number(editForm.weeklyStudyHours),
@@ -139,6 +218,8 @@ export default function StudentDetailPage() {
   const avgGpa = gpas.length ? (gpas.reduce((a, b) => a + b, 0) / gpas.length).toFixed(2) : null;
   const pcts = results.map((r) => r.percentage).filter((p) => p != null);
   const avgPct = pcts.length ? Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length) : null;
+  const performanceTag = getPerformanceTag(avgPct);
+  const performanceClasses = getPerformanceTagClasses(performanceTag.tone);
 
   // Build subject score chart data from latest semester
   const latestResult = results[results.length - 1];
@@ -159,12 +240,15 @@ export default function StudentDetailPage() {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">{student.name}</h1>
               <p className="text-sm text-gray-500">{student.email}</p>
-              {(student.profile?.department || student.profile?.year) && (
+              {(student.profile?.course || student.profile?.department || student.profile?.semester || student.profile?.year) && (
                 <p className="text-xs text-gray-400 mt-0.5">
-                  {[student.profile.department, student.profile.year].filter(Boolean).join(" · ")}
+                  {[student.profile.course, student.profile.department, student.profile.semester, student.profile.year].filter(Boolean).join(" · ")}
                 </p>
               )}
             </div>
+            <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${performanceClasses}`}>
+              {performanceTag.label}
+            </span>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -202,7 +286,7 @@ export default function StudentDetailPage() {
             )}
           </div>
           <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
-            {[{label:"Full Name",key:"name",type:"text",placeholder:"John Doe"},{label:"Department / Major",key:"department",type:"text",placeholder:"e.g. Computer Science"},{label:"Year / Semester",key:"year",type:"text",placeholder:"e.g. 3rd Year"},{label:"Target GPA",key:"targetGpa",type:"number",placeholder:"e.g. 8.5"},{label:"Weekly Study Hours",key:"weeklyStudyHours",type:"number",placeholder:"e.g. 15"}].map(({label,key,type,placeholder}) => (
+            {[{label:"Full Name",key:"name",type:"text",placeholder:"John Doe"},{label:"Course",key:"course",type:"text",placeholder:"e.g. BTech"},{label:"Department / Major",key:"department",type:"text",placeholder:"e.g. Computer Science"},{label:"Semester",key:"semester",type:"text",placeholder:"e.g. Semester 1"},{label:"Year / Level",key:"year",type:"text",placeholder:"e.g. 3rd Year"},{label:"Target GPA",key:"targetGpa",type:"number",placeholder:"e.g. 8.5"},{label:"Weekly Study Hours",key:"weeklyStudyHours",type:"number",placeholder:"e.g. 15"}].map(({label,key,type,placeholder}) => (
               <label key={key}>
                 <span className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1.5">{label}</span>
                 <input
@@ -415,33 +499,210 @@ export default function StudentDetailPage() {
           </div>
         ) : (
           <div className="divide-y divide-gray-50">
-            {quizzes.map((q) => (
-              <div key={q._id} className="flex items-center justify-between px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${q.status === "submitted" ? "bg-green-50" : "bg-amber-50"}`}>
-                    {q.status === "submitted" ? (
-                      <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    ) : (
-                      <Clock className="h-4 w-4 text-amber-500" />
-                    )}
+            {quizzes.map((q) => {
+              const missed = q.status === "missed";
+              const isEditing = quizEditId === q._id;
+              return (
+                <div key={q._id} className="px-6 py-4">
+                  <div className="flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={() => setExpandedQuiz(expandedQuiz === q._id ? null : q._id)}
+                      className="flex items-center gap-3 text-left"
+                    >
+                      <div className={`p-2 rounded-lg ${q.status === "submitted" ? "bg-green-50" : missed ? "bg-rose-50" : "bg-amber-50"}`}>
+                        {q.status === "submitted" ? (
+                          <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        ) : (
+                          <Clock className={`h-4 w-4 ${missed ? "text-rose-500" : "text-amber-500"}`} />
+                        )}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900">{q.subject} — {q.topic}</p>
+                        <p className="text-xs text-gray-400 capitalize">
+                          {q.difficulty} · {new Date(q.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </button>
+                    <div className="flex items-center gap-2">
+                      {q.status === "submitted" ? (
+                        <div className="text-right">
+                          <p className="font-bold text-green-600">{q.percentage}%</p>
+                          <p className="text-xs text-gray-400">{q.score}/{q.total} correct</p>
+                        </div>
+                      ) : missed ? (
+                        <span className="text-xs font-medium text-rose-600 bg-rose-50 px-2 py-1 rounded-full">Missed</span>
+                      ) : (
+                        <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Pending</span>
+                      )}
+                      {q.status === "pending" && (
+                        <button
+                          type="button"
+                          onClick={() => openQuizEdit(q)}
+                          className="p-2 rounded-lg hover:bg-gray-100 text-gray-500"
+                          title="Edit quiz"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => deleteQuiz(q._id)}
+                        disabled={deletingQuiz === q._id}
+                        className="p-2 rounded-lg hover:bg-red-50 text-red-500"
+                        title="Delete quiz"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">{q.subject} — {q.topic}</p>
-                    <p className="text-xs text-gray-400 capitalize">{q.difficulty} · {new Date(q.createdAt).toLocaleDateString()}</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  {q.status === "submitted" ? (
-                    <>
-                      <p className="font-bold text-green-600">{q.percentage}%</p>
-                      <p className="text-xs text-gray-400">{q.score}/{q.total} correct</p>
-                    </>
-                  ) : (
-                    <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">Pending</span>
+
+                  {expandedQuiz === q._id && (
+                    <div className="mt-4 rounded-lg border border-gray-100 bg-gray-50/50 p-4">
+                      <div className="flex flex-wrap gap-3 text-xs text-gray-500">
+                        <span className="rounded-full bg-white px-2.5 py-1 border">{q.mandatory ? "Mandatory" : "Optional"}</span>
+                        {q.dueAt ? (
+                          <span className="rounded-full bg-white px-2.5 py-1 border">Due {new Date(q.dueAt).toLocaleString()}</span>
+                        ) : null}
+                        <span className="rounded-full bg-white px-2.5 py-1 border">Status: {q.status}</span>
+                      </div>
+
+                      {isEditing && quizEditForm ? (
+                        <div className="mt-4 space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <label>
+                              <span className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Subject</span>
+                              <input
+                                value={quizEditForm.subject}
+                                onChange={(e) => setQuizEditForm((f) => ({ ...f, subject: e.target.value }))}
+                                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                              />
+                            </label>
+                            <label>
+                              <span className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Topic</span>
+                              <input
+                                value={quizEditForm.topic}
+                                onChange={(e) => setQuizEditForm((f) => ({ ...f, topic: e.target.value }))}
+                                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                              />
+                            </label>
+                            <label>
+                              <span className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Difficulty</span>
+                              <select
+                                value={quizEditForm.difficulty}
+                                onChange={(e) => setQuizEditForm((f) => ({ ...f, difficulty: e.target.value }))}
+                                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm bg-white"
+                              >
+                                <option value="easy">easy</option>
+                                <option value="medium">medium</option>
+                                <option value="hard">hard</option>
+                              </select>
+                            </label>
+                            <label>
+                              <span className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1.5">Deadline</span>
+                              <input
+                                type="datetime-local"
+                                value={quizEditForm.dueAt}
+                                onChange={(e) => setQuizEditForm((f) => ({ ...f, dueAt: e.target.value }))}
+                                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm"
+                              />
+                            </label>
+                            <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                              <input
+                                type="checkbox"
+                                checked={quizEditForm.mandatory}
+                                onChange={(e) => setQuizEditForm((f) => ({ ...f, mandatory: e.target.checked }))}
+                                className="h-4 w-4 accent-indigo-600"
+                              />
+                              Mandatory
+                            </label>
+                          </div>
+
+                          <div className="space-y-3">
+                            {quizEditQuestions.map((question, qi) => (
+                              <div key={qi} className="rounded-lg border border-gray-200 bg-white p-3">
+                                <input
+                                  value={question.question}
+                                  onChange={(e) => updateQuizQuestion(qi, { question: e.target.value })}
+                                  className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm"
+                                  placeholder={`Question ${qi + 1}`}
+                                />
+                                <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                  {question.options.map((opt, oi) => (
+                                    <input
+                                      key={oi}
+                                      value={opt}
+                                      onChange={(e) => updateQuizOption(qi, oi, e.target.value)}
+                                      className="rounded-md border border-gray-200 px-3 py-2 text-sm"
+                                      placeholder={`Option ${oi + 1}`}
+                                    />
+                                  ))}
+                                </div>
+                                <input
+                                  value={question.answer}
+                                  onChange={(e) => updateQuizQuestion(qi, { answer: e.target.value })}
+                                  className="mt-3 w-full rounded-md border border-gray-200 px-3 py-2 text-sm"
+                                  placeholder="Correct answer"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={saveQuizEdit}
+                              disabled={quizEditSaving}
+                              className="inline-flex items-center gap-2 rounded-lg bg-black text-white px-4 py-2 text-sm font-semibold"
+                            >
+                              {quizEditSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                              Save Changes
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setQuizEditId(null)}
+                              className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="mt-4 space-y-3">
+                          {(q.questions || []).map((question, idx) => {
+                            const answer = q.userAnswers?.[idx];
+                            const correct = answer && answer.trim() === (question.answer || "").trim();
+                            return (
+                              <div key={idx} className="rounded-lg border border-gray-200 bg-white p-3">
+                                <p className="text-sm font-semibold text-gray-900">Q{idx + 1}. {question.question}</p>
+                                <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                  {(question.options || []).map((opt, oi) => (
+                                    <div
+                                      key={oi}
+                                      className={`rounded-md border px-2 py-1 ${
+                                        opt === question.answer
+                                          ? "border-green-200 bg-green-50 text-green-700"
+                                          : "border-gray-200 bg-gray-50 text-gray-600"
+                                      }`}
+                                    >
+                                      {opt}
+                                    </div>
+                                  ))}
+                                </div>
+                                {q.status === "submitted" && (
+                                  <p className={`mt-2 text-xs font-semibold ${correct ? "text-green-600" : "text-red-600"}`}>
+                                    Student answer: {answer || "—"}
+                                  </p>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

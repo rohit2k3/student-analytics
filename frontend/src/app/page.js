@@ -1,22 +1,64 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../components/auth-context";
+import { apiRequest } from "../lib/api";
 import { ArrowRight, BarChart2, BookOpen, BrainCircuit, Target, CheckCircle2 } from "lucide-react";
 
 export default function Home() {
+  const router = useRouter();
+  const { isAuthenticated, login } = useAuth();
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.replace("/dashboard");
+    }
+  }, [isAuthenticated, router]);
+
+  async function onSubmit(event) {
+    event.preventDefault();
+    setSubmitting(true);
+    setError("");
+
+    try {
+      const data = await apiRequest("/auth/register", { method: "POST", body: form });
+      login(data.token, data.user);
+      router.replace("/dashboard");
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
   return (
-    <div className="bg-black min-h-screen text-white selection:bg-white selection:text-black font-sans">
+    <div className="bg-[#0b0b0f] min-h-screen text-white selection:bg-white selection:text-black">
       
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-black/80 backdrop-blur-md z-50 border-b border-white/10">
+      <nav className="fixed top-0 w-full bg-[#0b0b0f]/80 backdrop-blur-md z-50 border-b border-white/10">
         <div className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-lg tracking-tight text-white">AuraAnalytics</span>
+            <span className="font-display font-bold text-xl tracking-tight text-white">AuraAnalytics</span>
           </div>
-          <Link
-            href="/login"
-            className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
-          >
-            Sign In
-          </Link>
+          <div className="flex items-center gap-4 text-sm">
+            <Link
+              href="#register"
+              className="font-semibold text-white/80 hover:text-white transition-colors"
+            >
+              Register
+            </Link>
+            <Link
+              href="/login"
+              className="rounded-full border border-white/15 px-4 py-2 text-white/80 hover:text-white hover:border-white/30 transition-colors"
+            >
+              Sign In
+            </Link>
+          </div>
         </div>
       </nav>
 
@@ -24,16 +66,17 @@ export default function Home() {
         
         {/* Background Effects */}
         <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/[0.02] rounded-full blur-[100px]"></div>
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/[0.02] rounded-full blur-[100px]"></div>
+          <div className="absolute top-0 right-0 w-[520px] h-[520px] bg-white/[0.04] rounded-full blur-[120px]"></div>
+          <div className="absolute bottom-0 left-0 w-[440px] h-[440px] bg-white/[0.03] rounded-full blur-[120px]"></div>
+          <div className="absolute inset-x-0 top-16 h-64 bg-gradient-to-b from-white/[0.08] to-transparent"></div>
         </div>
 
         {/* Two-Column Hero */}
-        <section className="relative z-10 px-6 py-16 md:py-24 max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+        <section className="relative z-10 px-6 py-16 md:py-24 max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-10 items-center">
           
           {/* Left Column: Text Content */}
           <div className="flex flex-col items-start text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-bold uppercase tracking-widest text-gray-400 mb-6 group cursor-default">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-bold uppercase tracking-[0.2em] text-gray-400 mb-6 group cursor-default">
               <span className="flex h-2 w-2 mr-1">
                 <span className="animate-pulse absolute inline-flex h-2 w-2 rounded-full bg-white opacity-70"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
@@ -41,27 +84,27 @@ export default function Home() {
               Academic OS v2.0
             </div>
             
-            <h1 className="text-5xl sm:text-6xl lg:text-[4.5rem] font-extrabold tracking-tighter leading-[1.05] mb-6 text-white">
-              Data driven <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-500">learning.</span>
+            <h1 className="font-display text-5xl sm:text-6xl lg:text-[4.5rem] font-semibold tracking-tight leading-[1.05] mb-6 text-white">
+              Teacher-first <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400">performance intelligence.</span>
             </h1>
             
-            <p className="text-lg text-gray-400 font-medium max-w-md mb-8 leading-relaxed">
-              Don't guess your performance. AuraAnalytics gives you precise clarity on where you stand and exactly what to study next.
+            <p className="text-lg text-gray-300 font-medium max-w-md mb-8 leading-relaxed">
+              Build a living academic workspace for your students. Spot gaps, assign focused practice, and track improvement with clarity.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
               <Link
-                href="/login"
-                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-black px-7 py-3 rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors"
+                href="#register"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-black px-7 py-3 rounded-full text-sm font-bold hover:bg-gray-200 transition-colors"
               >
-                Start Free <ArrowRight className="h-4 w-4" />
+                Start Teacher Workspace <ArrowRight className="h-4 w-4" />
               </Link>
               <a
                 href="#platform"
-                className="w-full sm:w-auto flex items-center justify-center text-white border border-white/20 px-7 py-3 rounded-lg text-sm font-semibold hover:bg-white/5 transition-colors"
+                className="w-full sm:w-auto flex items-center justify-center text-white/90 border border-white/20 px-7 py-3 rounded-full text-sm font-semibold hover:bg-white/5 transition-colors"
               >
-                View Features
+                Explore Platform
               </a>
             </div>
           </div>
@@ -118,6 +161,96 @@ export default function Home() {
             </div> */}
           </div>
 
+        </section>
+
+        {/* Registration Section */}
+        <section id="register" className="py-24 md:py-32 max-w-6xl mx-auto px-6">
+          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-start">
+            <div>
+              <h2 className="font-display text-3xl md:text-5xl font-semibold tracking-tight mb-4 text-white">Start your teacher workspace.</h2>
+              <p className="text-lg text-gray-300 max-w-md">
+                Build a shared view of performance, add students, and keep every term aligned to measurable goals.
+              </p>
+              <div className="mt-8 grid gap-4 text-sm text-gray-300">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4">
+                  <p className="text-white font-semibold">Step 1</p>
+                  <p className="text-gray-400">Create a verified teacher account.</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4">
+                  <p className="text-white font-semibold">Step 2</p>
+                  <p className="text-gray-400">Add students and capture semester data.</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4">
+                  <p className="text-white font-semibold">Step 3</p>
+                  <p className="text-gray-400">Use analytics and AI quizzes to guide progress.</p>
+                </div>
+              </div>
+              <div className="mt-6 text-sm text-gray-500">
+                Already have an account?{" "}
+                <Link href="/login" className="text-white underline-offset-4 hover:underline">
+                  Sign in here
+                </Link>
+              </div>
+            </div>
+
+            <form
+              onSubmit={onSubmit}
+              className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-white/[0.02] p-8 backdrop-blur-xl shadow-2xl"
+            >
+              {error ? (
+                <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                  {error}
+                </div>
+              ) : null}
+
+              <div className="space-y-4">
+                <div className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-xs uppercase tracking-[0.2em] text-gray-400">
+                  Teacher Registration
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300">Full Name</label>
+                  <input
+                    required
+                    className="mt-1 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-white/40 focus:outline-none"
+                    value={form.name}
+                    onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
+                    placeholder="Jane Teacher"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300">Email</label>
+                  <input
+                    type="email"
+                    required
+                    className="mt-1 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-white/40 focus:outline-none"
+                    value={form.email}
+                    onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
+                    placeholder="you@school.edu"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-300">Password</label>
+                  <input
+                    type="password"
+                    minLength={6}
+                    required
+                    className="mt-1 w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:border-white/40 focus:outline-none"
+                    value={form.password}
+                    onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
+                    placeholder="At least 6 characters"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-black transition-colors hover:bg-gray-200 disabled:opacity-60"
+              >
+                {submitting ? "Creating workspace..." : "Create teacher workspace"}
+              </button>
+            </form>
+          </div>
         </section>
 
         {/* Minimal Stats Strip */}

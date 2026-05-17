@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "../../../../components/auth-context";
 import { apiRequest } from "../../../../lib/api";
+import { getPerformanceTag, getPerformanceTagClasses } from "../../../../lib/performance-tag";
 import {
   Users,
   UserPlus,
@@ -121,6 +122,7 @@ export default function StudentsListPage() {
                     <div className="flex items-center gap-1"><GraduationCap className="h-3.5 w-3.5" /> Avg GPA</div>
                   </th>
                   <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Avg Score</th>
+                  <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Performance</th>
                   <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider"></th>
                 </tr>
               </thead>
@@ -128,6 +130,8 @@ export default function StudentsListPage() {
                 {filtered.map((student) => {
                   const gpa = parseFloat(student.avgGpa);
                   const gpaColor = isNaN(gpa) ? "text-gray-400" : gpa >= 7 ? "text-green-600" : gpa >= 5 ? "text-amber-500" : "text-red-500";
+                  const tag = getPerformanceTag(student.avgPercentage);
+                  const tagClasses = getPerformanceTagClasses(tag.tone);
                   return (
                     <tr key={student.id} className="hover:bg-gray-50/60 transition-colors">
                       <td className="px-6 py-4">
@@ -157,6 +161,11 @@ export default function StudentsListPage() {
                       </td>
                       <td className="px-6 py-4 text-gray-700 font-medium">
                         {student.avgPercentage != null ? `${student.avgPercentage}%` : "—"}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold ${tagClasses}`}>
+                          {tag.label}
+                        </span>
                       </td>
                       <td className="px-6 py-4 text-right">
                         <Link

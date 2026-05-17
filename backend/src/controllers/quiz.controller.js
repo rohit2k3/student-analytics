@@ -62,6 +62,11 @@ async function submitQuiz(req, res) {
 }
 
 async function listAssignedQuizzes(req, res) {
+  const now = new Date();
+  await AssignedQuiz.updateMany(
+    { studentId: req.user.id, status: "pending", dueAt: { $lt: now } },
+    { $set: { status: "missed" } }
+  );
   const quizzes = await AssignedQuiz.find({ studentId: req.user.id })
     .sort({ createdAt: -1 })
     .lean();
@@ -78,6 +83,12 @@ async function submitAssignedQuiz(req, res) {
   const quiz = await AssignedQuiz.findOne({ _id: req.params.quizId, studentId: req.user.id });
   if (!quiz) return res.status(404).json({ message: "Quiz not found" });
   if (quiz.status === "submitted") return res.status(400).json({ message: "Quiz already submitted" });
+  if (quiz.status === "missed") return res.status(400).json({ message: "Quiz deadline has passed" });
+  if (quiz.dueAt && quiz.dueAt.getTime() < Date.now()) {
+    quiz.status = "missed";
+    await quiz.save();
+    return res.status(400).json({ message: "Quiz deadline has passed" });
+  }
 
   let correct = 0;
   quiz.questions.forEach((q, i) => {

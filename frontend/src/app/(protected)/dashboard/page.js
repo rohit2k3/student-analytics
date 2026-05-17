@@ -19,6 +19,7 @@ import {
 import { useAuth } from "../../../components/auth-context";
 import { apiRequest } from "../../../lib/api";
 import { FileStack, Activity, GraduationCap, TrendingUp, BookOpen, AlertCircle, BrainCircuit } from "lucide-react";
+import { getPerformanceTag, getPerformanceTagClasses } from "../../../lib/performance-tag";
 
 export default function DashboardPage() {
   const { token, user } = useAuth();
@@ -70,6 +71,8 @@ export default function DashboardPage() {
     { name: "Strong Subjects", value: analytics.strongSubjects.length },
     { name: "Weak Subjects", value: analytics.weakSubjects.length },
   ];
+  const performanceTag = getPerformanceTag(analytics.overallPercentage);
+  const performanceClasses = getPerformanceTagClasses(performanceTag.tone);
 
   if (loading) {
     return (
@@ -98,6 +101,9 @@ export default function DashboardPage() {
           <p className="mt-2 max-w-2xl text-indigo-100">
             Here's an overview of your academic performance across all tracked semesters. Use the insights below to focus your study time effectively.
           </p>
+          <span className={`mt-4 inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold bg-white/90 ${performanceClasses}`}>
+            {performanceTag.label}
+          </span>
         </div>
         {/* Background decorative elements */}
         <div className="absolute right-0 top-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-indigo-500 opacity-50 blur-3xl"></div>
